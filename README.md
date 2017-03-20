@@ -118,4 +118,5 @@ Some notes and useful links I used when coding Tales of Popolon
 	* Stunt car racer: https://www.youtube.com/watch?v=TPDznD7QHb0
 	* Micronaut one: https://www.youtube.com/watch?v=v8gtajpc89s
 	* Spectrum Doom (is this real though? I have not seen the sourcecode/binary anywhere, if anyone has it, please let me know!): https://www.youtube.com/watch?v=kW_XDSFdn-4
+	* ARTRAG's raycasting demo for MSX2+ Turbo R: https://www.youtube.com/watch?v=8ffvdvpePY8
 
