@@ -17,10 +17,9 @@ You are our only hope Popolon! Only mortal souls can enter the fortress. Please 
 
 Screenshots:
 
-<img src="https://github.com/santiontanon/talesofpopolon/blob/master/graphics/top-ss1.png?raw=true" alt="title screen" width="320"/>
-<img src="https://github.com/santiontanon/talesofpopolon/blob/master/graphics/top-ss2.png?raw=true" alt="in game 1" width="320"/>
-<img src="https://github.com/santiontanon/talesofpopolon/blob/master/graphics/top-ss3.png?raw=true" alt="in game 2" width="320"/>
-<img src="https://github.com/santiontanon/talesofpopolon/blob/master/graphics/top-ss4.png?raw=true" alt="in game 3" width="320"/>
+<img src="https://github.com/santiontanon/talesofpopolon/blob/master/graphics/top-ss1.png?raw=true" alt="title screen" width="480"/> <img src="https://github.com/santiontanon/talesofpopolon/blob/master/graphics/top-ss2.png?raw=true" alt="in game 1" width="320"/>
+
+<img src="https://github.com/santiontanon/talesofpopolon/blob/master/graphics/top-ss3.png?raw=true" alt="in game 2" width="320"/> <img src="https://github.com/santiontanon/talesofpopolon/blob/master/graphics/top-ss4.png?raw=true" alt="in game 3" width="320"/>
 
 You can see a video of the game at: https://youtu.be/u9HiZfxoLmk
 
@@ -32,9 +31,8 @@ In Tales of Popolon, you play as Popolon, an ancient Greek hero tasked with the 
 
 The following screens show the basic elements of the game screen:
 
-![in-game screen](https://github.com/santiontanon/talesofpopolon/blob/master/graphics/top-title-layout.png?raw=true)
-
-![in-game screen](https://github.com/santiontanon/talesofpopolon/blob/master/graphics/top-screen-layout.png?raw=true)
+<img src="https://github.com/santiontanon/talesofpopolon/blob/master/graphics/top-title-layout.png?raw=true" alt="title screen" width="640"/>
+<img src="https://github.com/santiontanon/talesofpopolon/blob/master/graphics/top-screen-layout.png?raw=true" alt="in-game screen" width="640"/>
 
 Pay special attention to:
 * Popolon's main weapon: initially, Popolon starts empty handed and thus has a very short range of attack. Make sure you find a sword to increase the attack range.
