@@ -17,9 +17,9 @@ You are our only hope Popolon! Only mortal souls can enter the fortress. Please 
 
 Screenshots:
 
-<img src="https://github.com/santiontanon/talesofpopolon/blob/master/graphics/top-ss1.png?raw=true" alt="title screen" width="480"/> <img src="https://github.com/santiontanon/talesofpopolon/blob/master/graphics/top-ss2.png?raw=true" alt="in game 1" width="320"/>
+<img src="https://github.com/santiontanon/talesofpopolon/blob/master/graphics/top-ss1.png?raw=true" alt="title screen" width="400"/> <img src="https://github.com/santiontanon/talesofpopolon/blob/master/graphics/top-ss2.png?raw=true" alt="in game 1" width="400"/>
 
-<img src="https://github.com/santiontanon/talesofpopolon/blob/master/graphics/top-ss3.png?raw=true" alt="in game 2" width="320"/> <img src="https://github.com/santiontanon/talesofpopolon/blob/master/graphics/top-ss4.png?raw=true" alt="in game 3" width="320"/>
+<img src="https://github.com/santiontanon/talesofpopolon/blob/master/graphics/top-ss3.png?raw=true" alt="in game 2" width="400"/> <img src="https://github.com/santiontanon/talesofpopolon/blob/master/graphics/top-ss4.png?raw=true" alt="in game 3" width="400"/>
 
 You can see a video of the game at: https://youtu.be/u9HiZfxoLmk
 
