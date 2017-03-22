@@ -17,6 +17,7 @@ Execute:
     ; Silence and init keyboard:
     xor a
     ld (CLIKSW),a
+    ld (MSXTurboRMode),a    ; start with Z80 mode
 
     ld a,2      ; Change screen mode
     call CHGMOD
@@ -324,6 +325,7 @@ previous_trigger1:                  ds virtual 1
 previous_trigger2:                  ds virtual 1
 
 raycast_screen_size_change_requested:   ds virtual 1
+CPUmode_change_requested:           ds virtual 1    
 
 endOfMemoryToClearOnNewGame:
 
@@ -373,6 +375,8 @@ MUSIC_pointer:                      ds virtual 2
 MUSIC_instrument_envelope_ptr:      ds virtual 3*2
 ;HKSAVE:                             ds virtual 5
 music_buffer:                       ds virtual MAX_SONG_SIZE
+
+MSXTurboRMode:                      ds virtual 1
 
 patternCopyBuffer2:
 password_buffer:                    ds virtual 32

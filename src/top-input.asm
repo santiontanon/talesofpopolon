@@ -78,6 +78,8 @@ checkInput:
     ld a,#04    ;; get the status of the 4th keyboard row (to get the M key)
     call SNSMAT 
     cpl
+    bit 7,a
+    call nz,checkInput_request_CPUmode_change
     and #04     ;; we keep the status of M
     ld b,a
     ld a,#08    ;; get the status of the 8th keyboard row (to get SPACE and arrow keys)
@@ -168,10 +170,13 @@ checkInput_Trigger1Pressed_trigger2WasPressed:
     ret
 
 checkInput_request_screen_size_change:
-    push af
-    ld a,1
-    ld (raycast_screen_size_change_requested),a
-    pop af
+    ld hl,raycast_screen_size_change_requested
+    ld (hl),1
+    ret
+
+checkInput_request_CPUmode_change:
+    ld hl,CPUmode_change_requested
+    ld (hl),1
     ret
 
 ReadJoystick_Trigger1Pressed:

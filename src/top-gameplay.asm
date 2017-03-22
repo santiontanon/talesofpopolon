@@ -45,7 +45,19 @@ Game_Update_Cycle_playerdead:
     ld hl,game_cycle
     inc (hl)
     ;out (#2d),a
+
+    ld a,(game_state)
+    cp GAME_STATE_PLAYING
+    jr nz,Game_Update_Cycle_change_state
+
     ret
+
+Game_Update_Cycle_change_state:
+    pop af  ; simulate a "ret"
+    cp GAME_STATE_ENTER_MAP
+    jp z,change_game_state  ;; do not stop music if we are just changing map
+    call StopPlayingMusic
+    jp change_game_state
 
 
 updatePlayer:

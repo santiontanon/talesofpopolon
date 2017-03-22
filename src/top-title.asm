@@ -23,20 +23,17 @@ TitleScreen_Loop_loop1_smaller:
     add a,9
     ADD_HL_A
     ld de,NAMTBL2+32*5
-    jp TitleScreen_Loop_loop1_draw
+    jr TitleScreen_Loop_loop1_draw
 TitleScreen_Loop_loop1_larger:
     sub 9
     ld de,NAMTBL2+32*5
-    ex de,hl
-    ADD_HL_A
-    ex de,hl
+    ADD_DE_A
     ld bc,9
 TitleScreen_Loop_loop1_draw:
     call LDIRVM
     call increaseTitleState_and_HaltTwice
     cp 21
-    jp m,TitleScreen_Loop_loop1
-
+    jr nz,TitleScreen_Loop_loop1
 
     ld a,31
     ld (title_state),a
@@ -48,31 +45,28 @@ TitleScreen_Loop_loop2_smaller:
     add a,32
     ld b,0
     ld c,a
-    jp TitleScreen_Loop_loop2_render
+    jr TitleScreen_Loop_loop2_render
 TitleScreen_Loop_loop2_larger:
     ld bc,15
 TitleScreen_Loop_loop2_render:
+    ld a,(title_state)
+    push af
     push bc
     ; de = NAMTBL2+32*6 + a
-    ld a,(title_state)
-    ld hl,NAMTBL2+32*6
-    ADD_HL_A
-    ex de,hl
+    ld de,NAMTBL2+32*6
+    ADD_DE_A
     ld hl,title_popolon_line1_patterns
     call LDIRVM
     pop bc
 
-    ; de = NAMTBL2+32*7 + a
-    ld a,(title_state)
-    ld hl,NAMTBL2+32*7
-    ADD_HL_A
-    ex de,hl
+    pop af
+    ld de,NAMTBL2+32*7
+    ADD_DE_A
     ld hl,title_popolon_line2_patterns
     call LDIRVM
     call decreaseTitleState_and_HaltTwice
-    cp 9
-    jp p,TitleScreen_Loop_loop2
-
+    cp 8
+    jr nz,TitleScreen_Loop_loop2
 
     ld a,22
     ld (title_state),a
@@ -95,8 +89,8 @@ TitleScreen_Loop_loop3: ;; "underline" coming in
     ld bc,18
     call FILVRM
     call decreaseTitleState_and_HaltTwice
-    cp 8
-    jp p,TitleScreen_Loop_loop3
+    cp 7
+    jr nz,TitleScreen_Loop_loop3
 
     call TitleScreen_setupsprites
 
@@ -108,27 +102,47 @@ TitleScreen_Loop_loop3: ;; "underline" coming in
 
     xor a
     ld (title_state),a
-    ld hl,previous_trigger1
-    ld (hl),a
+    ld a,(previous_trigger1)
 TitleScreen_Loop_loop:
     call TitleScreen_update_bg_sprites
 
     ; press space to play
     ld a,(title_state)
+    push af
     and #08
     call TitleScreen_Loop_update_press_space
     ; animate warriors:
-    ld a,(title_state)
+    pop af
     sra a
     sra a
     and #03
-    or a
-    jp z,TitleScreen_render_warrior1
+    jr z,TitleScreen_render_warrior1
     dec a
-    jp z,TitleScreen_render_warrior2
+    jr z,TitleScreen_render_warrior2
     dec a
-    jp z,TitleScreen_render_warrior3
-    jp TitleScreen_render_warrior2
+    jr z,TitleScreen_render_warrior3
+    jr TitleScreen_render_warrior2
+
+
+TitleScreen_render_warrior2:
+    ld hl,title_warrior_left_2
+    jr TitleScreen_render_warrior1_after
+;    call TitleScreen_render_warrior
+;    jp TitleScreen_Loop_loop_continue
+
+TitleScreen_render_warrior3:
+    ld hl,title_warrior_left_3
+    jr TitleScreen_render_warrior1_after
+;    call TitleScreen_render_warrior
+;    jp TitleScreen_Loop_loop_continue
+
+
+TitleScreen_render_warrior1:
+    ld hl,title_warrior_left_1
+TitleScreen_render_warrior1_after:
+    call TitleScreen_render_warrior
+;    jr TitleScreen_Loop_loop_continue
+
 
 TitleScreen_Loop_loop_continue:
     call increaseTitleState_and_HaltTwice
@@ -145,7 +159,7 @@ TitleScreen_Loop_loop_continue:
     push bc
     call checkTrigger1updatingPrevious
     pop bc
-    jp z,TitleScreen_Loop_loop
+    jr z,TitleScreen_Loop_loop
 
     ld a,6
     ld (Music_tempo),a
@@ -160,22 +174,23 @@ TitleScreen_Loop_pressed_space_loop:
 
     ; press space to play flashing fast
     ld a,(title_state2)
+    push af
     and #02
     call TitleScreen_Loop_update_press_space
 
     ; animate warriors:
-    ld a,(title_state2)
+    pop af
     and #08
     jp z,TitleScreen_render_warrior4
     call TitleScreen_render_warrior5
 
 TitleScreen_Loop_pressed_space_loop_continue:
     call increaseTitleState_and_HaltTwice
-    ld a,(title_state2)
-    inc a
-    ld (title_state2),a
+    ld hl,title_state2
+    inc (hl)
+    ld a,(hl)
     cp 64
-    jp nz,TitleScreen_Loop_pressed_space_loop
+    jr nz,TitleScreen_Loop_pressed_space_loop
 
 TitleScreen_Loop_play:
     ld a,GAME_STATE_PLAYING
@@ -235,7 +250,7 @@ TitleScreen_setupsprites_loop2:
     ld e,a
     pop af
     cp 48
-    jp nz,TitleScreen_setupsprites_loop
+    jr nz,TitleScreen_setupsprites_loop
 
     ld hl,knight_sprite_attributes
     ld de,SPRATR2
@@ -244,7 +259,7 @@ TitleScreen_setupsprites_loop2:
 
 
 TitleScreen_Loop_update_press_space:
-    jp z,TitleScreen_Loop_update_press_space_draw
+    jr z,TitleScreen_Loop_update_press_space_draw
 TitleScreen_Loop_update_press_space_clear:
     xor a
     ld hl,NAMTBL2+32*16+6
@@ -258,18 +273,24 @@ TitleScreen_Loop_update_press_space_draw:
 
 
 decreaseTitleState_and_HaltTwice:
-    ld a,(title_state)
-    dec a
-    ld (title_state),a
+    ld hl,title_state
+    dec (hl)
+    ld a,(hl)
+;    ld a,(title_state)
+;    dec a
+;    ld (title_state),a
     halt
     halt
     ret
 
 
 increaseTitleState_and_HaltTwice:
-    ld a,(title_state)
-    inc a
-    ld (title_state),a
+    ld hl,title_state
+    inc (hl)
+    ld a,(hl)
+;    ld a,(title_state)
+;    inc a
+;    ld (title_state),a
     halt
     halt
     ret
@@ -277,10 +298,11 @@ increaseTitleState_and_HaltTwice:
 
 TitleScreen_update_bg_sprites:
     ld a,(title_state)
-    cp 128
-    jp p,TitleScreen_update_bg_sprites_second_sprite
+    push af
+    and #80
+    jr nz,TitleScreen_update_bg_sprites_second_sprite
     ld hl,raycast_buffer
-    jp TitleScreen_update_bg_sprites_copy_sprite
+    jr TitleScreen_update_bg_sprites_copy_sprite
 TitleScreen_update_bg_sprites_second_sprite:
     ld hl,raycast_buffer+12*32
 TitleScreen_update_bg_sprites_copy_sprite:
@@ -288,22 +310,21 @@ TitleScreen_update_bg_sprites_copy_sprite:
     ld bc,32*12
     ldir
 
-    ld a,(title_state)
+    pop af
     and #7f
     cp 14
     jp p,TitleScreen_update_bg_sprites_second_half
     and #fe
-    add a,a
-    jp TitleScreen_update_bg_sprites_apply_mask
+    jr TitleScreen_update_bg_sprites_apply_mask
 TitleScreen_update_bg_sprites_second_half:
     cp 114
     jp m,TitleScreen_update_bg_sprites_mask_applied
     neg
     add a,127
     and #fe
-    add a,a
 
 TitleScreen_update_bg_sprites_apply_mask:
+    add a,a
     ; apply a mask:
     ld hl,title_bg_masks
     ADD_HL_A
@@ -324,7 +345,7 @@ TitleScreen_update_bg_sprites_loop_internal:
     inc hl    
     dec bc
     dec e
-    jp nz,TitleScreen_update_bg_sprites_loop_internal
+    jr nz,TitleScreen_update_bg_sprites_loop_internal
     
     ld a,(hl)
     exx
@@ -340,43 +361,24 @@ TitleScreen_update_bg_sprites_loop_internal:
 
     ld a,c
     or b
-    jp nz,TitleScreen_update_bg_sprites_loop
+    jr nz,TitleScreen_update_bg_sprites_loop
 
 TitleScreen_update_bg_sprites_mask_applied:
     ld hl,raycast_color_buffer
     ld de,SPRTBL2
     ld bc,32*12
-    call LDIRVM    
-
-    ret
-
-TitleScreen_render_warrior1:
-    ld hl,title_warrior_left_1
-TitleScreen_render_warrior1_after:
-    call TitleScreen_render_warrior
-    jp TitleScreen_Loop_loop_continue
-
-TitleScreen_render_warrior2:
-    ld hl,title_warrior_left_2
-    jr TitleScreen_render_warrior1_after
-;    call TitleScreen_render_warrior
-;    jp TitleScreen_Loop_loop_continue
-
-TitleScreen_render_warrior3:
-    ld hl,title_warrior_left_3
-    jr TitleScreen_render_warrior1_after
-;    call TitleScreen_render_warrior
-;    jp TitleScreen_Loop_loop_continue
+    jp LDIRVM    
 
 
 TitleScreen_render_warrior4:
     ld hl,title_warrior_left_top_4
     ld de,NAMTBL2+5*32+7
     ld bc,2
+    push bc
     call LDIRVM
     ld hl,title_warrior_right_top_4
     ld de,NAMTBL2+5*32+23
-    ld bc,2
+    pop bc
     call LDIRVM
     ld hl,title_warrior_left_4
     call TitleScreen_render_warrior

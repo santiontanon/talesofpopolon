@@ -206,7 +206,6 @@ setupROMRAMslots:
     ld h,#80        ; move page 1 of the ROM to page 2 in main memory
     jp ENASLT       
     
-
 ;-----------------------------------------------
 ; Source: https://www.msx.org/forum/msx-talk/development/8-bit-atan2?page=0
 ; 8-bit atan2

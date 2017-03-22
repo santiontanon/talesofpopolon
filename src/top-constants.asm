@@ -22,6 +22,7 @@ SNSMAT: equ #0141
 RSLREG: equ #0138
 RDVDP:  equ #013e
 KILBUF: equ #0156
+CHGCPU:	equ #0180
 ;-----------------------------------------------
 ; System variables
 VDP_DATA: equ #98

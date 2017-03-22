@@ -34,9 +34,6 @@ Game_Loop_loop:
 
     ;; ---- SUBFRAME 1 ----
     call Game_Update_Cycle
-    ld a,(game_state)
-    cp GAME_STATE_PLAYING
-    jp nz,Game_Loop_exit
     call Game_updateRaycastVariables
     call raycast_reset_clear_buffer
     ld a,(initial_rendering_blocks)
@@ -46,10 +43,9 @@ Game_Loop_loop:
     call raycast_render_to_buffer
 
     ;; ---- SUBFRAME 2 ----
-    call Game_Update_Cycle
-    ld a,(game_state)
-    cp GAME_STATE_PLAYING
-    jp nz,Game_Loop_exit
+    ld a,(MSXTurboRMode)
+    cp 2
+    call nz,Game_Update_Cycle
     ld a,(initial_rendering_blocks+1)
     ld (raycast_first_column),a
     ld a,(initial_rendering_blocks+2)
@@ -58,9 +54,6 @@ Game_Loop_loop:
 
     ;; ---- SUBFRAME 3 ----
     call Game_Update_Cycle
-    ld a,(game_state)
-    cp GAME_STATE_PLAYING
-    jp nz,Game_Loop_exit
     ld a,(initial_rendering_blocks+2)
     ld (raycast_first_column),a
     ld a,(initial_rendering_blocks+3)
@@ -68,10 +61,9 @@ Game_Loop_loop:
     call raycast_render_to_buffer
 
     ;; ---- SUBFRAME 4 ----
-    call Game_Update_Cycle
-    ld a,(game_state)
-    cp GAME_STATE_PLAYING
-    jp nz,Game_Loop_exit
+    ld a,(MSXTurboRMode)
+    cp 2
+    call nz,Game_Update_Cycle
     ld a,(initial_rendering_blocks+3)
     ld (raycast_first_column),a
     ld a,(initial_rendering_blocks+4)
@@ -79,9 +71,15 @@ Game_Loop_loop:
     call raycast_render_to_buffer
     call raycast_render_buffer
 
-    ld a,(raycast_screen_size_change_requested)
+    ld hl,raycast_screen_size_change_requested
+    ld a,(hl)
     or a
     call nz,Game_trigger_screen_size_change
+
+    ld hl,CPUmode_change_requested
+    ld a,(hl)
+    or a
+    call nz,Game_trigger_CPUmode_change
 
     call saveLastRaycastVariables
 
@@ -89,11 +87,17 @@ Game_Loop_loop:
 
     jp Game_Loop_loop
 
-Game_Loop_exit:
-    cp GAME_STATE_ENTER_MAP
-    jp z,change_game_state  ;; do not stop music if we are just changing map
-    call StopPlayingMusic
-    jp change_game_state
+
+raycastCompleteRender:
+    call Game_updateRaycastVariables
+    call raycast_reset_clear_buffer
+    ld a,(initial_rendering_blocks)
+    ld (raycast_first_column),a
+    ld a,(initial_rendering_blocks+4)
+    ld (raycast_last_column),a
+    call raycast_render_to_buffer
+    call raycast_render_buffer
+;    jr saveLastRaycastVariables
 
 saveLastRaycastVariables:
     ld a,(raycast_camera_x)
@@ -106,18 +110,6 @@ saveLastRaycastVariables:
     add a,b
     ld (last_raycast_player_angle),a
     ret
-
-
-raycastCompleteRender:
-    call Game_updateRaycastVariables
-    call raycast_reset_clear_buffer
-    ld a,(initial_rendering_blocks)
-    ld (raycast_first_column),a
-    ld a,(initial_rendering_blocks+4)
-    ld (raycast_last_column),a
-    call raycast_render_to_buffer
-    call raycast_render_buffer
-    jp saveLastRaycastVariables
 
 
 Game_updateRaycastVariables:
@@ -160,6 +152,8 @@ Game_updateRaycastVariables:
 
 
 Game_trigger_screen_size_change:
+    xor a
+    ld (hl),a
     ld a,(initial_rendering_blocks+4)
     cp 192
     ld hl,ROM_initial_rendering_blocks_160
@@ -173,10 +167,35 @@ Game_trigger_screen_size_change2:
     ld de,initial_rendering_blocks
     ld bc,18
     ldir
-    xor a
-    ld (raycast_screen_size_change_requested),a ; clear the request
     jp raycast_reset
     
+; modes are:
+; 0: Z80
+; 1: R800 fast
+; 2: R800 smooth
+Game_trigger_CPUmode_change:
+    xor a
+    ld (hl),a   ;; set CPUmode_change_requested = 0
+    ld a,(CHGCPU)
+    cp #C3
+    ret nz  ; if we are not in a turbo R, just ignore
+    ld hl,MSXTurboRMode
+    ld a,(hl)
+    inc a
+    cp 3
+    jr nz,Game_trigger_CPUmode_change_noreset
+    xor a
+Game_trigger_CPUmode_change_noreset:
+    ld (hl),a
+    or a
+    jr z,Game_trigger_CPUmode_change_z80
+Game_trigger_CPUmode_change_r800:
+    ld a,#82       ; R800 DRAM
+    jp CHGCPU
+Game_trigger_CPUmode_change_z80:
+    ld a,#80       ; Z80 DRAM
+    jp CHGCPU
+
 
 initializeGame:
     call clearScreenLeftToRight
