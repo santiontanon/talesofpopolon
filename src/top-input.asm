@@ -56,6 +56,46 @@ checkTrigger1updatingPrevious:
     ret
 
 
+chheckInput_get_P:
+    ld a,#04    ;; get the status of the 4th keyboard row (to get the P key)
+    call SNSMAT 
+    bit 5,a ;; "P"
+    ret
+
+checkInput_pause:
+    ; pause music:
+    xor a
+    ld (MUSIC_play),a
+    call CLEAR_PSG_VOLUME
+    ld hl,SFX_weapon_switch
+    call playSFX
+    
+    ; display pause message:
+    ld hl,UI_message_pause
+    ld c,UI_message_pause_end-UI_message_pause
+    call displayUIMessage
+
+    call chheckInput_get_P
+    jr nz,checkInput_pause_p_released
+    halt
+    jr checkInput_pause
+checkInput_pause_p_released:
+    call chheckInput_get_P
+    jr z,checkInput_pause_p_pressed_again
+    halt
+    jr checkInput_pause_p_released
+checkInput_pause_p_pressed_again:
+    call chheckInput_get_P
+    jr nz,checkInput_pause_resume_game
+    halt
+    jr checkInput_pause_p_pressed_again
+checkInput_pause_resume_game:
+    ; resume music:
+    ld a,1
+    ld (MUSIC_play),a
+    ret
+
+
 ;-----------------------------------------------
 ; checks all the player input (left/right/thrust/fire)
 checkInput:
@@ -75,11 +115,13 @@ checkInput:
     bit 3,a ;; "3"
     call nz,ChangeArmor
 
-    ld a,#04    ;; get the status of the 4th keyboard row (to get the M key)
+    ld a,#04    ;; get the status of the 4th keyboard row (to get the M, R and P key)
     call SNSMAT 
     cpl
-    bit 7,a
+    bit 7,a ;; "R"
     call nz,checkInput_request_CPUmode_change
+    bit 5,a ;; "P"
+    call nz,checkInput_pause
     and #04     ;; we keep the status of M
     ld b,a
     ld a,#08    ;; get the status of the 8th keyboard row (to get SPACE and arrow keys)
@@ -87,9 +129,9 @@ checkInput:
     cpl
     and #f1     ;; keep only the arrow keys and space
     or b        ;; we bring the state of M from before
-    jp z,Readjoystick   ;; if no key was pressed, then check the joystick
+    jr z,Readjoystick   ;; if no key was pressed, then check the joystick
     bit 0,a
-    jp nz,checkInput_Trigger1Pressed    ;; when trigger 1 is hold, movement changes, so, we have a different function
+    jr nz,checkInput_Trigger1Pressed    ;; when trigger 1 is hold, movement changes, so, we have a different function
     bit 2,a
     call nz,Trigger2Pressed
     bit 7,a
@@ -102,7 +144,7 @@ checkInput:
     call nz,MoveBackwards
 
     bit 2,a
-    jp nz,checkInput_trigger2WasPressed
+    jr nz,checkInput_trigger2WasPressed
     xor a
     ld (previous_trigger2),a
     ld (previous_trigger1),a
@@ -118,7 +160,7 @@ Readjoystick:
     ;; Using BIOS calls:
     call readJoystick1Status
     bit 0,a
-    jp nz,ReadJoystick_Trigger1Pressed    ;; when trigger 1 is hold, movement changes, so, we have a different function
+    jr nz,ReadJoystick_Trigger1Pressed    ;; when trigger 1 is hold, movement changes, so, we have a different function
     bit 1,a
     call nz,Trigger2Pressed
     bit 3,a
@@ -131,7 +173,7 @@ Readjoystick:
     call nz,MoveBackwards
 
     bit 1,a
-    jp nz,checkInput_trigger2WasPressed
+    jr nz,checkInput_trigger2WasPressed
     xor a
     ld (previous_trigger2),a
     ld (previous_trigger1),a
@@ -157,7 +199,7 @@ checkInput_Trigger1Pressed  ;; this is different, since players "straffe" when g
     call nz,MoveBackwards
 
     bit 1,a
-    jp nz,checkInput_Trigger1Pressed_trigger2WasPressed
+    jr nz,checkInput_Trigger1Pressed_trigger2WasPressed
     xor a
     ld (previous_trigger2),a
     inc a
@@ -175,8 +217,14 @@ checkInput_request_screen_size_change:
     ret
 
 checkInput_request_CPUmode_change:
+    push af
     ld hl,CPUmode_change_requested
     ld (hl),1
+checkInput_request_CPUmode_change_wait_for_R_released:
+    call chheckInput_get_P    
+    bit 7,a 
+    jr z,checkInput_request_CPUmode_change_wait_for_R_released   
+    pop af
     ret
 
 ReadJoystick_Trigger1Pressed:
@@ -193,7 +241,7 @@ ReadJoystick_Trigger1Pressed:
     call nz,MoveBackwards
 
     bit 1,a
-    jp nz,checkInput_Trigger1Pressed_trigger2WasPressed
+    jr nz,checkInput_Trigger1Pressed_trigger2WasPressed
     xor a
     ld (previous_trigger2),a
     inc a
@@ -209,10 +257,10 @@ Trigger1Pressed:
     push af
     ld a,(previous_trigger1)
     or a
-    jp nz,Trigger1Pressed_continue
+    jr nz,Trigger1Pressed_continue
     ld a,(player_state)
     cp PLAYER_STATE_WALKING
-    jp nz,Trigger1Pressed_continue
+    jr nz,Trigger1Pressed_continue
     ld a,PLAYER_STATE_ATTACK
     ld (player_state),a
     xor a
@@ -227,12 +275,12 @@ Trigger2Pressed:
     push af
     ld a,(previous_trigger2)
     or a
-    jp nz,Trigger2Pressed_continue
+    jr nz,Trigger2Pressed_continue
 
     ;; fire arrow:
     ld a,(current_secondary_weapon)
     or a
-    jp z,Trigger2Pressed_continue   ;; if no secondary weapon selected
+    jr z,Trigger2Pressed_continue   ;; if no secondary weapon selected
     dec a
     call z,fireArrow   ;; if arrows are selected
     dec a
@@ -280,11 +328,11 @@ MoveForward:
     cp MAP_TILE_DOOR    
     call z,openDoor   ; after this call, "a" contains the new value of the map position (0 if the door was open, or MAP_TILE_DOOR otherwise)
     cp MAP_TILE_EXIT
-    jp z,popHLAndJumpToWalkedIntoAnExit
+    jr z,popHLAndJumpToWalkedIntoAnExit
     cp MAP_TILE_MIRROR_WALL
     call z,walkedIntoAMirrorWall
     or a
-    jp nz,MoveForward_skip_x
+    jr nz,MoveForward_skip_x
     ld (player_precision_x),hl
     ld a,h
     ld (player_x),a
@@ -314,7 +362,7 @@ MoveForward_skip_x:
     cp MAP_TILE_MIRROR_WALL
     call z,walkedIntoAMirrorWall
     or a
-    jp nz,MoveForward_skip_y
+    jr nz,MoveForward_skip_y
     ld (player_precision_y),hl
     ld a,h
     ld (player_y),a
@@ -368,16 +416,16 @@ fireArrow:
     push af
     ld a,(player_mana)
     or a
-    jp z,fireArrow_continue
+    jr z,fireArrow_continue
     ld hl,arrow_data  ; since there can be at most 2 arrows in screen at a time, we just unroll the search loop:
     ld a,(hl)
     or a
-    jp z,fireArrow_slot_found
+    jr z,fireArrow_slot_found
     ld hl,arrow_data+ARROW_STRUCT_SIZE
     ld a,(hl)
     or a
-    jp z,fireArrow_slot_found
-    jp fireArrow_continue   
+    jr z,fireArrow_slot_found
+    jr fireArrow_continue   
 
 fireArrow_slot_found:
     ld a,(player_mana)  ;; use up one heart:
@@ -417,7 +465,7 @@ fireArrow_slot_found_continue:
     inc de
     ld a,(current_secondary_weapon)
     dec a
-    jp nz,fireArrow_setIceArrowSprite
+    jr nz,fireArrow_setIceArrowSprite
     ld a,SPRITE_PATTERN_ARROW
     jr fireArrow_spriteSet
 fireArrow_setIceArrowSprite:
@@ -442,12 +490,12 @@ fireIceArrow:
     ld hl,arrow_data  ; since there can be at most 2 arrows in screen at a time, we just unroll the search loop:
     ld a,(hl)
     or a
-    jp z,fireIceArrow_slot_found
+    jr z,fireIceArrow_slot_found
     ld hl,arrow_data+ARROW_STRUCT_SIZE
     ld a,(hl)
     or a
-    jp z,fireIceArrow_slot_found
-    jp fireArrow_continue   
+    jr z,fireIceArrow_slot_found
+    jr fireArrow_continue   
 
 fireIceArrow_slot_found:
     ld a,(player_mana)  ;; use up two hearts:
@@ -455,7 +503,7 @@ fireIceArrow_slot_found:
     dec a
     ld (player_mana),a
     ld (hl),ITEM_ICEARROW   ; state: ice arrow
-    jp fireArrow_slot_found_continue
+    jr fireArrow_slot_found_continue
 
 
 triggerHourglass:
@@ -465,7 +513,7 @@ triggerHourglass:
     jp m,triggerHourglass_continue
     ld a,(hourglass_timer)
     or a
-    jp nz,triggerHourglass_continue
+    jr nz,triggerHourglass_continue
 
     call pauseMusic
 

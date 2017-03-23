@@ -1,7 +1,7 @@
 ;-----------------------------------------------
 ; Determines which game loop to change to, given the current game state
 change_game_state:
-    ld a,(game_state)
+    ld (game_state),a
     or a
 ;    cp GAME_STATE_SPLASH
     jp z,SplashScreen_Loop
@@ -34,7 +34,7 @@ GameOver_Loop:
     ld (knight_sprite_attributes+12),a    ; place the sword sprites somewhere outside of the screen
 
 GameOver_Loop_loop1:
-    call Game_Update_Cycle
+    call Game_Update_Cycle_playerdead
     call GameOver_updateknightSprites
     ld a,(game_over_cycle)
     inc a
@@ -54,10 +54,9 @@ GameOver_updateknightSprites:
 
     ld a,(game_over_cycle)
     push af
-    ld hl,SPRTBL2+KNIGHT_SPRITE*32
-    ADD_HL_A
-    ld de,knight_sprites+32
-    ex de,hl
+    ld de,SPRTBL2+KNIGHT_SPRITE*32
+    ADD_DE_A
+    ld hl,knight_sprites+32
     ld a,(game_over_cycle)
     neg
     add a,16
@@ -70,10 +69,9 @@ GameOver_updateknightSprites:
     pop af
 ;    ld a,(game_over_cycle)
     push af
-    ld hl,SPRTBL2+KNIGHT_OUTLINE_SPRITE*32
-    ADD_HL_A
-    ld de,knight_sprites_outline+32
-    ex de,hl
+    ld de,SPRTBL2+KNIGHT_OUTLINE_SPRITE*32
+    ADD_DE_A
+    ld hl,knight_sprites_outline+32
     push bc
     call LDIRVM   
     pop bc
@@ -81,20 +79,18 @@ GameOver_updateknightSprites:
     pop af
 ;    ld a,(game_over_cycle)
     push af
-    ld hl,SPRTBL2+KNIGHT_SPRITE*32+16
-    ADD_HL_A
-    ld de,knight_sprites+32+16
-    ex de,hl
+    ld de,SPRTBL2+KNIGHT_SPRITE*32+16
+    ADD_DE_A
+    ld hl,knight_sprites+32+16
     push bc
     call LDIRVM   
     pop bc
 
     pop af
 ;    ld a,(game_over_cycle)
-    ld hl,SPRTBL2+KNIGHT_OUTLINE_SPRITE*32+16
-    ADD_HL_A
-    ld de,knight_sprites_outline+32+16
-    ex de,hl
+    ld de,SPRTBL2+KNIGHT_OUTLINE_SPRITE*32+16
+    ADD_DE_A
+    ld hl,knight_sprites_outline+32+16
     jp LDIRVM   
 
 
@@ -115,7 +111,7 @@ GameOver_Loop_loop2:
 
 GameOver_goto_splash_screen:
     ld a,GAME_STATE_SPLASH
-    ld (game_state),a
+;    ld (game_state),a
     jp change_game_state
 
 

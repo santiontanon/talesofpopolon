@@ -2,21 +2,8 @@
 ; Main game loop!
 Game_Loop:    
     call initializeGame
-
-;    ld a,MAP_FORTRESS1
-;    ld a,MAP_CATACOMBS1
-;    ld a,MAP_MEDUSA2
-;    ld (player_map),a
-
     ; load the first map:
     ld hl,map_tunnel1_pletter
-;    ld hl,map_fortress1_pletter
-;    ld hl,map_fortress2_pletter
-;    ld hl,map_catacombs1_pletter
-;    ld hl,map_catacombs2_pletter
-;    ld hl,map_medusa1_pletter
-;    ld hl,map_medusa2_pletter
-;    ld hl,map_keres1_pletter
 Game_Loop_after_setting_map:
     call loadMap
     call update_UI_keys
@@ -36,38 +23,41 @@ Game_Loop_loop:
     call Game_Update_Cycle
     call Game_updateRaycastVariables
     call raycast_reset_clear_buffer
-    ld a,(initial_rendering_blocks)
-    ld (raycast_first_column),a
-    ld a,(initial_rendering_blocks+1)
-    ld (raycast_last_column),a
+    ld hl,initial_rendering_blocks
+    ld de,raycast_first_column
+    push de
+    ldi
+    ldi
     call raycast_render_to_buffer
 
     ;; ---- SUBFRAME 2 ----
     ld a,(MSXTurboRMode)
-    cp 2
+    dec a
     call nz,Game_Update_Cycle
-    ld a,(initial_rendering_blocks+1)
-    ld (raycast_first_column),a
-    ld a,(initial_rendering_blocks+2)
-    ld (raycast_last_column),a
+    ld hl,initial_rendering_blocks+1
+    pop de
+    push de
+    ldi
+    ldi
     call raycast_render_to_buffer
 
     ;; ---- SUBFRAME 3 ----
     call Game_Update_Cycle
-    ld a,(initial_rendering_blocks+2)
-    ld (raycast_first_column),a
-    ld a,(initial_rendering_blocks+3)
-    ld (raycast_last_column),a
+    ld hl,initial_rendering_blocks+2
+    pop de
+    push de
+    ldi
+    ldi
     call raycast_render_to_buffer
 
     ;; ---- SUBFRAME 4 ----
     ld a,(MSXTurboRMode)
-    cp 2
+    dec a
     call nz,Game_Update_Cycle
-    ld a,(initial_rendering_blocks+3)
-    ld (raycast_first_column),a
-    ld a,(initial_rendering_blocks+4)
-    ld (raycast_last_column),a
+    ld hl,initial_rendering_blocks+3
+    pop de
+    ldi
+    ldi
     call raycast_render_to_buffer
     call raycast_render_buffer
 
@@ -85,7 +75,7 @@ Game_Loop_loop:
 
 ;    out (#2d),a    
 
-    jp Game_Loop_loop
+    jr Game_Loop_loop
 
 
 raycastCompleteRender:
@@ -97,8 +87,6 @@ raycastCompleteRender:
     ld (raycast_last_column),a
     call raycast_render_to_buffer
     call raycast_render_buffer
-;    jr saveLastRaycastVariables
-
 saveLastRaycastVariables:
     ld a,(raycast_camera_x)
     ld (last_raycast_camera_x),a
@@ -171,8 +159,8 @@ Game_trigger_screen_size_change2:
     
 ; modes are:
 ; 0: Z80
-; 1: R800 fast
-; 2: R800 smooth
+; 1: R800 smooth
+; 2: R800 fast
 Game_trigger_CPUmode_change:
     xor a
     ld (hl),a   ;; set CPUmode_change_requested = 0
@@ -180,19 +168,32 @@ Game_trigger_CPUmode_change:
     cp #C3
     ret nz  ; if we are not in a turbo R, just ignore
     ld hl,MSXTurboRMode
+    inc (hl)
     ld a,(hl)
-    inc a
     cp 3
     jr nz,Game_trigger_CPUmode_change_noreset
     xor a
-Game_trigger_CPUmode_change_noreset:
     ld (hl),a
+Game_trigger_CPUmode_change_noreset:
     or a
     jr z,Game_trigger_CPUmode_change_z80
 Game_trigger_CPUmode_change_r800:
+    dec a
+    jr z,Game_trigger_CPUmode_change_r800_smooth
+    ld hl,UI_message_r800fast_mode
+    ld c,UI_message_r800fast_mode_end-UI_message_r800fast_mode
+Game_trigger_CPUmode_change_r800_b:
+    call displayUIMessage
     ld a,#82       ; R800 DRAM
     jp CHGCPU
+Game_trigger_CPUmode_change_r800_smooth:
+    ld hl,UI_message_r800smooth_mode
+    ld c,UI_message_r800smooth_mode_end-UI_message_r800smooth_mode
+    jr Game_trigger_CPUmode_change_r800_b
 Game_trigger_CPUmode_change_z80:
+    ld hl,UI_message_z80_mode
+    ld c,UI_message_z80_mode_end-UI_message_z80_mode
+    call displayUIMessage
     ld a,#80       ; Z80 DRAM
     jp CHGCPU
 

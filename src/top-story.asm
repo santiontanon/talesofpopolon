@@ -10,10 +10,11 @@ GameStory_Loop:
     ; 1) decompress the story text:
     ld hl,story_pletter
     ld de,raycast_buffer
+    push de
     call pletter_unpack
 
     ; 2) story block 1:
-    ld de,raycast_buffer 
+    pop de
     ld a,story_block1_lines
     call GameStory_block_loop
 
@@ -36,8 +37,6 @@ GameStory_Loop:
     call GameStory_block_loop
 
     ; 5) story block 4:
-;    ld bc,17   ; fortress + olympus
-;    ld bc,7    ; poison bottle
     ld bc,18   ; fortress
     ld de,story_image3_name_table
     ld hl,story_image3_pattern_data
@@ -56,14 +55,13 @@ GameStory_Loop:
 Ending_Loop:
     call clearScreenLeftToRight
     call decodePatternsToAllBanks
-;    ld a,8
-;    ld (Music_tempo),a
     ld hl,LoPStorySongPletter
     call PlayCompressedSong
 
     ; 1) decompress the ending text:
     ld hl,ending_pletter
     ld de,raycast_buffer
+    push de
     call pletter_unpack
 
     ; 2) ending block 1:
@@ -71,7 +69,7 @@ Ending_Loop:
     ld de,story_image2_name_table
     ld hl,story_image2_pattern_data
     call GameStory_draw_vignette
-    ld de,raycast_buffer
+    pop de
     ld a,ending_block1_lines
     call GameStory_block_loop
 
@@ -110,7 +108,10 @@ GameStory_block_loop_line_loop:
     call checkTrigger1updatingPrevious
     pop bc
     or a
-    call nz,GameStory_block_loop_set_skip
+    jr z,GameStory_block_loop_after_skip
+    ld a,1
+    ld (story_skip),a
+GameStory_block_loop_after_skip:
 
     halt
     halt
@@ -142,11 +143,6 @@ GameStory_block_loop_wait_for_user:
     jr z,GameStory_block_loop_wait_for_user
 GameStory_block_loop_wait_for_user_end:
     jp clearScreenLeftToRight
-
-GameStory_block_loop_set_skip:
-    ld a,1
-    ld (story_skip),a
-    ret
 
 
 ;-----------------------------------------------
@@ -182,18 +178,20 @@ GameStory_draw_vignette:
     pop hl  ; we pop "pointer to the name table of the vignette" into hl
     ld de,NAMTBL2+32*2+12
     ld bc,7
+    push bc
     push hl
     call LDIRVM
 
     pop hl
-    ld bc,7
+    pop bc
+    push bc
     add hl,bc
     ld de,NAMTBL2+32*3+12
     push hl
     call LDIRVM
 
     pop hl
-    ld bc,7
+    pop bc
     add hl,bc
     ld de,NAMTBL2+32*4+12
     call LDIRVM

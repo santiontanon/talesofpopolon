@@ -41,15 +41,6 @@ Password_loop_loop:
     ld (game_cycle),a
     and #08
     jr z,Password_loop_draw_cursor    
-    jr Password_loop_draw_character
-
-
-Password_loop_draw_cursor:
-    ld a,193
-;    ld hl,NAMTBL2+256+32*2+12
-    call WRTVRM
-    jr Password_loop_loop
-
 
 Password_loop_draw_character:
     ld a,(de)
@@ -57,6 +48,11 @@ Password_loop_draw_character:
     call WRTVRM
     jr Password_loop_loop
 
+Password_loop_draw_cursor:
+    ld a,193
+;    ld hl,NAMTBL2+256+32*2+12
+    call WRTVRM
+    jr Password_loop_loop
 
 Password_loop_delete:
     ld a,e
@@ -573,12 +569,12 @@ triggerEvent_generatePassword_xor_loop
     xor (hl)
     inc hl
     djnz triggerEvent_generatePassword_xor_loop
-    ld (patternCopyBuffer),a
+    ld hl,patternCopyBuffer
+    ld (hl),a
 
     ; copy to currentMapMessages + 44 + 8
     ; (which has a template for it):
     ; by turning it into characters
-    ld hl,patternCopyBuffer
     ld de,currentMapMessages + 44 + 7
     ld b,8
 triggerEvent_generatePassword_convert_to_characters_line1:

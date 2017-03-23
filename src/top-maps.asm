@@ -72,7 +72,7 @@ loadMap_finding_doors:
 loadMap_find_all_doors:
     ld a,(de)
     cp MAP_TILE_DOOR
-    jp nz,loadMap_find_all_doors_nodoor
+    jr nz,loadMap_find_all_doors_nodoor
     ld (hl),e
     inc hl
 loadMap_find_all_doors_nodoor:
@@ -90,7 +90,7 @@ loadMap_reopening_doors_loop:
     ld d,currentMap/256
     ld a,(hl)
     or a
-    jp z,loadMap_reopening_doors_loop_doorclosed
+    jr z,loadMap_reopening_doors_loop_doorclosed
     ld e,(ix)   ; get the position of the door
     xor a
     ld (de),a
@@ -138,6 +138,7 @@ loadMap_remove_pickedup_items_loop_not_picked_up:
 
 loadmap_remove_killed_ker:
     ld a,(globalState_BossesKilled)
+loadmap_remove_killed_ker_2:
     or a
     ret z
     xor a
@@ -146,25 +147,27 @@ loadmap_remove_killed_ker:
 
 loadmap_remove_killed_medusa:
     ld a,(globalState_BossesKilled+1)
-    or a
-    ret z
-    xor a
-    ld (currentMapEnemies+1),a
-    ret
+    jr loadmap_remove_killed_ker_2
+;    or a
+;    ret z
+;    xor a
+;    ld (currentMapEnemies+1),a
+;    ret
 
 loadmap_remove_killed_final_kers:
-    ld a,(globalState_BossesKilled+2)
+    ld a,(globalState_BossesKilled+3)
     or a
     jp z,loadmap_remove_killed_final_kers2
     xor a
-    ld (currentMapEnemies+1),a
-loadmap_remove_killed_final_kers2:
-    ld a,(globalState_BossesKilled+3)
-    or a
-    ret z
-    xor a
     ld (currentMapEnemies+1+ENEMY_STRUCT_SIZE),a
-    ret
+loadmap_remove_killed_final_kers2:
+    ld a,(globalState_BossesKilled+2)
+    jr loadmap_remove_killed_ker_2
+;    or a
+;    ret z
+;    xor a
+;    ld (currentMapEnemies+1),a
+;    ret
 
 
 ;-----------------------------------------------
@@ -175,6 +178,7 @@ loadmap_remove_killed_final_kers2:
 ; - output:
 ;   - a: currentMap[(c/16)+(b/16)*16];
 getMapPosition:
+    push bc
     ld a,b
     and #f0     
     ld b,a
@@ -185,11 +189,10 @@ getMapPosition:
     rlca
     and #0f ; these sequence of 5 instructions, is equivalent to 4 srl a, but faster
     add a,b
-    push hl
-    ld h,currentMap/256
-    ld l,a
-    ld a,(hl)  ;; a = currentMap[(player_x/16)+(player_y/16)*16];
-    pop hl
+    ld b,currentMap/256
+    ld c,a
+    ld a,(bc)  ;; a = currentMap[(player_x/16)+(player_y/16)*16];
+    pop bc
     ret
 
 
@@ -235,7 +238,7 @@ openDoor_findSpot_loop:
     jp z,openDoor_foundSpot
     inc de
     inc hl
-    jp openDoor_findSpot_loop
+    jr openDoor_findSpot_loop
 openDoor_foundSpot:
     ld (hl),1   ; mark the door as open
 
@@ -253,7 +256,7 @@ openDoor_nokeys:
 ; checks whether a given position is in the light of sight of the camera
 ; for this, this function uses a Bresenham line drawing algorithm to draw a line from:
 ;   - ((last_raycast_camera_x),(last_raycast_camera_y)) to ((ix+1),(ix+2))
-; - z flag is set if the position is in line of sight
+;   - z flag is set if the position is in line of sight
 lineOfSightCheck:
     ld a,(last_raycast_camera_y)
     xor (ix+2)
@@ -552,7 +555,7 @@ lineOfSightCheck_collision_no_wall:
     ld a,b
     pop bc
     pop hl
-    ld c,0
+    ld c,0  ; we mark that we have reached a stated where we are not inside of a wall
     ret
 
 

@@ -21,14 +21,11 @@ initializeMemory:
 ; updates the game state
 Game_Update_Cycle:
     ;out (#2c),a
-    ld a,(player_health)
-    or a
-    jp z,Game_Update_Cycle_playerdead
     call checkInput
     
     ld a,(game_state)   ;; check if game state has changed
     cp GAME_STATE_PLAYING
-    ret nz
+    jr nz,Game_Update_Cycle_change_state
 
     call updatePlayer
     call updateKightSprites
@@ -46,17 +43,19 @@ Game_Update_Cycle_playerdead:
     inc (hl)
     ;out (#2d),a
 
-    ld a,(game_state)
-    cp GAME_STATE_PLAYING
-    jr nz,Game_Update_Cycle_change_state
+;    ld a,(game_state)
+;    cp GAME_STATE_PLAYING
+;    jr nz,Game_Update_Cycle_change_state
 
     ret
 
 Game_Update_Cycle_change_state:
-    pop af  ; simulate a "ret"
+    pop bc  ; simulate a "ret"
     cp GAME_STATE_ENTER_MAP
-    jp z,change_game_state  ;; do not stop music if we are just changing map
+    jr z,Game_Update_Cycle_change_state_no_music_stop  ;; do not stop music if we are just changing map
     call StopPlayingMusic
+Game_Update_Cycle_change_state_no_music_stop:
+    ld a,(game_state)
     jp change_game_state
 
 
@@ -67,11 +66,11 @@ updatePlayer:
     dec a
     ld (player_hit_timmer),a
     and #01
-    jp z,updatePlayer_flashin
+    jr z,updatePlayer_flashin
 updatePlayer_flashout:
     ld a,8  ;; flash the knight red color
     ld (knight_sprite_attributes+3),a
-    jp updatePlayer_continue
+    jr updatePlayer_continue
 updatePlayer_flashin:
     ld a,(current_armor_color)
     ld (knight_sprite_attributes+3),a
@@ -81,8 +80,8 @@ updatePlayer_continue:
     or a
     jp z,updatePlayer_walking
     dec a
-    jp z,updatePlayer_attack
-    jp updatePlayer_cooldown
+    jr z,updatePlayer_attack
+    jr updatePlayer_cooldown
 
 updatePlayer_walking:
     ld a,(player_state_cycle)
@@ -121,17 +120,16 @@ updatePlayer_attack:
 updatePlayer_sword_continue:
     ret
 updatePlayer_attack_sword:
-    ld a,127-40
-    ld (knight_sprite_attributes+8),a
     ld a,SWORD_COLOR
     ld (knight_sprite_attributes+11),a
-    ret
-updatePlayer_attack_goldsword:
+updatePlayer_attack_sword_2:
     ld a,127-40
     ld (knight_sprite_attributes+8),a
+    ret
+updatePlayer_attack_goldsword:
     ld a,GOLDSWORD_COLOR
     ld (knight_sprite_attributes+11),a
-    ret
+    jr updatePlayer_attack_sword_2
 
 
 updatePlayer_cooldown:
@@ -296,10 +294,12 @@ updateArrowsCheckEnemies_next_y:
     ret
 updateArrowsCheckEnemies_icearrow_hit:
     ; mark the enemy as frozen:
+    ld (iy+8),48 ; freeze for 48 frames
     ld a,(iy)
+    cp #80
+    jp p,updateArrowsCheckEnemies_next  ;; if the enemy is ALREADY frozen, then don't do anything else
     or #80
     ld (iy),a
-    ld (iy+8),48 ; freeze for 48 frames
     ld a,(iy+4)
     ld (iy+7),a     ; store the previous color in state2
     ld (iy+4),7     ; make it blue

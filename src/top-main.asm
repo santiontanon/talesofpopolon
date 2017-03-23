@@ -12,13 +12,17 @@
 ;-----------------------------------------------
 ; Code that gets executed when the game starts
 Execute:
+    ld sp,#F380
+
     call setupROMRAMslots
 
     ; Silence and init keyboard:
     xor a
     ld (CLIKSW),a
-    ld (MSXTurboRMode),a    ; start with Z80 mode
+    ld (MSXTurboRMode),a    ; Z80 mode
 
+    call Game_trigger_CPUmode_change    ; if we are in a turbo R, switch to R800 smooth mode
+    
     ld a,2      ; Change screen mode
     call CHGMOD
 
@@ -46,7 +50,7 @@ Execute:
 ;    ld a,GAME_STATE_TITLE
 ;    ld a,GAME_STATE_STORY
 ;    ld a,GAME_STATE_PLAYING
-    ld (game_state),a
+;    ld (game_state),a
     jp change_game_state
 
 ;-----------------------------------------------
@@ -211,6 +215,23 @@ UI_message_equip_armor_silver_end:
 UI_message_equip_armor_gold:
     db "GOLD ARMOR"
 UI_message_equip_armor_gold_end:
+
+UI_message_z80_mode:
+    db "Z80"
+UI_message_z80_mode_end:
+
+UI_message_r800smooth_mode:
+    db "R800S"
+UI_message_r800smooth_mode_end:
+
+UI_message_r800fast_mode:
+    db "R800F"
+UI_message_r800fast_mode_end:
+
+UI_message_pause:
+    db "PAUSE"
+UI_message_pause_end:
+
 
 UI_message_game_over:
     db "GAME OVER"

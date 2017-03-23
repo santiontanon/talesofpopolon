@@ -3,7 +3,7 @@
 ; arguments: 
 ; - hl: pointer to the compressed data
 PlayCompressedSong:
-    push hl
+;    push hl
     push de
     push bc
     push af
@@ -22,7 +22,7 @@ PlayCompressedSong:
     pop af
     pop bc
     pop de
-    pop hl
+;    pop hl
     ret
 
 
@@ -77,7 +77,7 @@ MUSIC_INT:     ; This routine is called 50 or 60 times / sec
 
     ld a,(MUSIC_play)
     or a
-    jp z,MUSIC_INT_NO_MUSIC
+    jp z,MUSIC_INT_NO_MUSIC_NO_POP
 
     push de
     ;; handle instruments currently playing
@@ -86,15 +86,27 @@ MUSIC_INT:     ; This routine is called 50 or 60 times / sec
     ld a,(MUSIC_tempo_counter)
     or a
     jp nz,MUSIC_INT_skip
-    call MUSIC_INT_AT_TEMPO
-    pop de
-    jp MUSIC_INT_NO_MUSIC
+
+;    push ix
+    push hl
+;    ld ix,(MUSIC_repeat_stack_ptr)
+    ld hl,(MUSIC_pointer)
+    call MUSIC_INT_INTERNAL
+    ld (MUSIC_pointer),hl
+;    ld (MUSIC_repeat_stack_ptr),ix
+    pop hl
+;    pop ix
+    ld a,(Music_tempo)
+    ld (MUSIC_tempo_counter),a
+    jr MUSIC_INT_NO_MUSIC
+
 MUSIC_INT_skip:
-    pop de
     dec a
     ld (MUSIC_tempo_counter),a
-MUSIC_INT_NO_MUSIC:
 
+MUSIC_INT_NO_MUSIC:
+    pop de
+MUSIC_INT_NO_MUSIC_NO_POP:
     ld a,(SFX_play)
     or a
     jp z,MUSIC_INT_NO_SFX
@@ -111,21 +123,6 @@ MUSIC_INT_NO_SFX:
     pop af
     ret
 
-
-MUSIC_INT_AT_TEMPO:
-    ld a,(Music_tempo)
-    ld (MUSIC_tempo_counter),a
-
-;    push ix
-    push hl
-;    ld ix,(MUSIC_repeat_stack_ptr)
-    ld hl,(MUSIC_pointer)
-    call MUSIC_INT_INTERNAL
-    ld (MUSIC_pointer),hl
-;    ld (MUSIC_repeat_stack_ptr),ix
-    pop hl
-;    pop ix
-    ret
     
 
 CLEAR_PSG_VOLUME:
@@ -137,8 +134,7 @@ CLEAR_PSG_VOLUME:
     call WRTPSG
     ld a,10
     ld e,0
-    call WRTPSG
-    ret
+    jp WRTPSG
 
 
 MUSIC_INT_INTERNAL:
@@ -160,7 +156,7 @@ MUSIC_INT_LOOP:
 ;    jp z,MUSIC_INT_MULTISKIP
 
     cp MUSIC_CMD_SET_INSTRUMENT
-    jp z,MUSIC_INT_SET_INSTRUMENT
+    jr z,MUSIC_INT_SET_INSTRUMENT
 
     cp MUSIC_CMD_PLAY_INSTRUMENT_CH1
     jp z,MUSIC_INT_PLAY_INSTRUMENT_CH1
@@ -175,7 +171,7 @@ MUSIC_INT_LOOP:
     jp z,MUSIC_INT_GOTO
 
     cp MUSIC_CMD_END                 
-    jp z,MUSIC_INT_END         ;; if the music sound is over, we are done
+    jr z,MUSIC_INT_END         ;; if the music sound is over, we are done
 
     cp SFX_CMD_END                 
     jp z,SFX_INT_END         ;; if the SFX sound is over, we are done
@@ -190,7 +186,7 @@ MUSIC_INT_LOOP_WRTPSG:
     ld e,(hl)             
     inc hl
     call WRTPSG                ;; send command to PSG
-    jp MUSIC_INT_LOOP     
+    jr MUSIC_INT_LOOP     
 
 MUSIC_INT_END:
     xor a
@@ -409,7 +405,6 @@ MUSIC_INT_GOTO:
     ld e,(hl)
     inc hl
     ld d,(hl)
-    inc hl
     ld hl,(MUSIC_start_pointer)
     add hl,de
     jp MUSIC_INT_LOOP
@@ -524,6 +519,7 @@ SFX_fire_arrow:
   db MUSIC_CMD_SKIP, MUSIC_CMD_SKIP, MUSIC_CMD_SKIP, MUSIC_CMD_SKIP
   db 10,#00          ;; silence
   db SFX_CMD_END    
+
 
 SFX_fire_bullet_enemy:   
   db 4,#00,5,#02    ;; frequency

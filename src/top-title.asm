@@ -194,12 +194,12 @@ TitleScreen_Loop_pressed_space_loop_continue:
 
 TitleScreen_Loop_play:
     ld a,GAME_STATE_PLAYING
-    ld (game_state),a
+;    ld (game_state),a
     jp change_game_state
 
 TitleScreen_Loop_go_to_story:
     ld a,GAME_STATE_STORY
-    ld (game_state),a
+;    ld (game_state),a
     jp change_game_state
 
 TitleScreen_setupsprites:
