@@ -35,6 +35,8 @@ playSFX:
     ld (SFX_pointer),hl
     ld a,1
     ld (SFX_play),a
+    xor a
+    ld (MUSIC_instruments+2),a  ;; reset the instrument in channel 3 to Square wave, so it does not interfere with the SFX
     ei
     ret
 
@@ -196,7 +198,9 @@ MUSIC_INT_END:
 SFX_INT_END:
     xor a
     ld (SFX_play),a
-    ret    
+    ld a,7
+    ld e,#b8  ;; SFX should reset all channels to tone
+    jp WRTPSG
 
 MUSIC_INT_SET_INSTRUMENT:
     ld d,(hl)   ; instrument
@@ -210,6 +214,7 @@ MUSIC_INT_SET_INSTRUMENT:
 MUSIC_INT_SET_INSTRUMENT_CHANNEL2:
     ld a,d
     ld (MUSIC_instruments+2),a
+    ld (MUSIC_channel3_instrument_buffer),a
     jp MUSIC_INT_LOOP
 MUSIC_INT_SET_INSTRUMENT_CHANNEL1:
     ld a,d
@@ -313,21 +318,25 @@ MUSIC_INT_PLAY_INSTRUMENT_CH3:
     inc hl
     ld a,4
     call WRTPSG
-    ld a,(MUSIC_instruments+2)
+    ld a,(MUSIC_channel3_instrument_buffer)
+    ld (MUSIC_instruments+2),a
     or a  ; since MUSIC_INSTRUMENT_SQUARE_WAVE = 0
     ;cp MUSIC_INSTRUMENT_SQUARE_WAVE
     jp z,MUSIC_INT_PLAY_INSTRUMENT_CH3_SW
-    dec a ; since MUSIC_INSTRUMENT_PIANO = 1
+    ;; none of the ToP songs use WIND in channel 3, so, I commented the code out to save space
+
+;    dec a ; since MUSIC_INSTRUMENT_PIANO = 1
+;    jp MUSIC_INT_PLAY_INSTRUMENT_CH3_PIANO  
     ;cp MUSIC_INSTRUMENT_PIANO
-    jp z,MUSIC_INT_PLAY_INSTRUMENT_CH3_PIANO
-MUSIC_INT_PLAY_INSTRUMENT_CH3_WIND:
-    ld de,Wind_instrument_profile+1
-    ld (MUSIC_instrument_envelope_ptr+4),de
-    ld a,(Wind_instrument_profile)
-    ld e,a
-    ld a,10
-    call WRTPSG 
-    jp MUSIC_INT_LOOP
+;    jp z,MUSIC_INT_PLAY_INSTRUMENT_CH3_PIANO
+;MUSIC_INT_PLAY_INSTRUMENT_CH3_WIND:
+;    ld de,Wind_instrument_profile+1
+;    ld (MUSIC_instrument_envelope_ptr+4),de
+;    ld a,(Wind_instrument_profile)
+;    ld e,a
+;    ld a,10
+;    call WRTPSG 
+;    jp MUSIC_INT_LOOP
 
 MUSIC_INT_PLAY_INSTRUMENT_CH3_PIANO:
     ld de,Piano_instrument_profile+1
@@ -455,7 +464,7 @@ MUSIC_INT_GOTO:
 
 StopPlayingMusic:
     ld hl,SFX_play
-    ld b,6
+    ld b,7
     xor a
 StopPlayingMusic_loop:
     ld (hl),a
@@ -566,7 +575,6 @@ SFX_sword_swing:
   db MUSIC_CMD_SKIP
   db 10,#02    ;; volume
   db MUSIC_CMD_SKIP
-  db  7,#b8    ;; SFX should reset all channels to tone
   db 10,#00    ;; silence
   db SFX_CMD_END    
 

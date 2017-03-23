@@ -317,7 +317,11 @@ updateKightSprites:
     ld c,a
     ld hl,knight_sprites
     add hl,bc
-    ld bc,32*256+VDP_DATA
+;    ld bc,32*256+VDP_DATA
+    ld b,32
+    ld a,(VDP.DW)
+    ld c,a
+    push bc
 updateKightSprites_loop1: 
     outi
     jp nz,updateKightSprites_loop1
@@ -326,7 +330,8 @@ updateKightSprites_loop1:
     ld bc,knight_sprites_outline-knight_sprites-32
 	
     add hl,bc
-    ld bc,32*256+VDP_DATA
+    pop bc
+;    ld bc,32*256+VDP_DATA
 updateKightSprites_loop2:
     outi
     jp nz,updateKightSprites_loop2
@@ -341,7 +346,10 @@ drawSprites:
     
     ld hl,knight_sprite_attributes
     ;; draw knight + knight_outline + sword + all the sprites in the assignment table
-    ld bc,4*(3+N_SPRITE_DEPTHS*N_SPRITES_PER_DEPTH)*256 + VDP_DATA
+;    ld bc,4*(3+N_SPRITE_DEPTHS*N_SPRITES_PER_DEPTH)*256 + VDP_DATA
+    ld b,4*(3+N_SPRITE_DEPTHS*N_SPRITES_PER_DEPTH)
+    ld a,(VDP.DW)
+    ld c,a
 drawSprites_loop:
     outi
     jp nz,drawSprites_loop

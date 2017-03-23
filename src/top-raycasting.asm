@@ -985,9 +985,13 @@ raycast_render_buffer:
     ld hl,(initial_rendering_address)
     call SETWRT
     ld hl,raycast_buffer
+    ld a,(VDP.DW)
+    ld c,a
     ld a,(amoount_of_bytes_to_render)
 raycast_render_buffer_loop1:
-    ld bc,256*256+VDP_DATA  ;; (256*256 is basically 0, but just for clarity, so I remember this copies 256 bytes)
+    ;ld bc,256*256+VDP_DATA  ;; (256*256 is basically 0, but just for clarity, so I remember this copies 256 bytes)
+    ld b,256
+
 raycast_render_buffer_loop1_b:
     outi
     jp nz,raycast_render_buffer_loop1_b
@@ -998,9 +1002,12 @@ raycast_render_buffer_loop1_b:
         ld hl,(initial_rendering_address+2)
         call SETWRT
         ld hl,raycast_color_buffer
+        ld a,(VDP.DW)
+        ld c,a
         ld a,(amoount_of_bytes_to_render)
 raycast_render_buffer_loop3:
-        ld bc,256*256+VDP_DATA  ;; (256*256 is basically 0, but just for clarity, so I remember this copies 256 bytes)
+;        ld bc,256*256+VDP_DATA  ;; (256*256 is basically 0, but just for clarity, so I remember this copies 256 bytes)
+        ld b,256
 raycast_render_buffer_loop3_b:
         outi
         jp nz,raycast_render_buffer_loop3_b
@@ -1011,10 +1018,13 @@ raycast_render_buffer_loop3_b:
     ld hl,(initial_rendering_address+4)
     call SETWRT
     ld hl,raycast_buffer+(32-RAYCAST_SIDE_BORDER*2)*8*8
+    ld a,(VDP.DW)
+    ld c,a
     ld a,(amoount_of_bytes_to_render)
     ;ld a,((32-RAYCAST_SIDE_BORDER*2)*8*8)/256
 raycast_render_buffer_loop2:
-    ld bc,256*256+VDP_DATA  ;; (256*256 is basically 0, but just for clarity, so I remember this copies 256 bytes)
+;    ld bc,256*256+VDP_DATA  ;; (256*256 is basically 0, but just for clarity, so I remember this copies 256 bytes)
+    ld b,256
 raycast_render_buffer_loop2_b:
     outi
     jp nz,raycast_render_buffer_loop2_b
@@ -1025,10 +1035,13 @@ raycast_render_buffer_loop2_b:
         ld hl,(initial_rendering_address+6)
         call SETWRT
         ld hl,raycast_color_buffer+(32-RAYCAST_SIDE_BORDER*2)*8*8
+        ld a,(VDP.DW)
+        ld c,a
         ld a,(amoount_of_bytes_to_render)
 ;        ld a,((32-RAYCAST_SIDE_BORDER*2)*8*8)/256
 raycast_render_buffer_loop4:
-        ld bc,256*256+VDP_DATA  ;; (256*256 is basically 0, but just for clarity, so I remember this copies 256 bytes)
+;        ld bc,256*256+VDP_DATA  ;; (256*256 is basically 0, but just for clarity, so I remember this copies 256 bytes)
+        ld b,256
 raycast_render_buffer_loop4_b:
         outi
         jp nz,raycast_render_buffer_loop4_b

@@ -25,7 +25,9 @@ KILBUF: equ #0156
 CHGCPU:	equ #0180
 ;-----------------------------------------------
 ; System variables
-VDP_DATA: equ #98
+;VDP_DATA: equ #98	
+VDP.DR:	equ #0006
+VDP.DW:	equ #0007
 VDP_REGISTER_0: equ #f3df
 CLIKSW: equ #f3db       ; keyboard sound
 FORCLR: equ #f3e9

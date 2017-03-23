@@ -67,18 +67,18 @@ checkInput_pause:
     xor a
     ld (MUSIC_play),a
     call CLEAR_PSG_VOLUME
-    ld hl,SFX_weapon_switch
+    ld hl,SFX_item_pickup
     call playSFX
-    
     ; display pause message:
     ld hl,UI_message_pause
     ld c,UI_message_pause_end-UI_message_pause
     call displayUIMessage
 
+checkInput_pause_loop:
     call chheckInput_get_P
     jr nz,checkInput_pause_p_released
     halt
-    jr checkInput_pause
+    jr checkInput_pause_loop
 checkInput_pause_p_released:
     call chheckInput_get_P
     jr z,checkInput_pause_p_pressed_again

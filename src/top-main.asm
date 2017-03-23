@@ -82,26 +82,14 @@ ROM_player_angle:
     db 0
 ROM_game_cycle:
     db 0
-ROM_game_over_cycle:
-    db 0
 ROM_player_map:
     db MAP_TUNNEL
 ROM_player_x:
     db 1*16+8
 ROM_player_y:
     db 3*16+8
-ROM_player_hit_timmer:  ;; after being hit, the player gets invulnerable for a bit
-    db 0
 ROM_player_health:
     db 6
-ROM_player_mana:
-    db 0
-ROM_player_keys:
-    db 0
-ROM_player_state:
-    db PLAYER_STATE_WALKING
-ROM_player_state_cycle
-    db 0
 ROM_available_weapons:
     db 1,0,0
 ROM_available_secondary_weapons:
@@ -112,8 +100,6 @@ ROM_previous_keymatrix0:
     db #ff
 ROM_spritePatternCacheTable:
     db #ff,#ff,#ff,#ff,#ff,#ff,#ff,#ff
-ROM_spritePatternCacheTableNextToErase:
-    db 0
 
 ROM_texture_colors:
     db #80  ; wall 1 
@@ -270,16 +256,10 @@ player_precision_y:     ds virtual 2
 player_angle:           ds virtual 1
 ; game state variables:
 game_cycle:             ds virtual 1
-game_over_cycle:        ds virtual 1
 player_map:             ds virtual 1
 player_x:               ds virtual 1
 player_y:               ds virtual 1
-player_hit_timmer:      ds virtual 1
 player_health:          ds virtual 1
-player_mana:            ds virtual 1
-player_keys:            ds virtual 1
-player_state:           ds virtual 1
-player_state_cycle:     ds virtual 1
 available_weapons:      ds virtual N_WEAPONS
 available_secondary_weapons:    ds virtual N_SECONDARY_WEAPONS
 available_armors:       ds virtual N_ARMORS
@@ -288,7 +268,6 @@ previous_keymatrix0:    ds virtual 1
 ;; patterns 24 - 31.
 ;; the number here indexes the list of enemy sprite patterns (enemySpritePatterns)
 spritePatternCacheTable:        ds virtual 8
-spritePatternCacheTableNextToErase:     ds virtual 1
 texture_colors:         ds virtual 9
 
 initial_rendering_blocks:   ds virtual 5
@@ -297,6 +276,7 @@ amoount_of_bytes_to_render: ds virtual 1
 raycast_angle_offset:       ds virtual 1
 raycast_amount_to_clear:    ds virtual 2
 raycast_sprite_angle_cutoff: ds virtual 1
+
 
 AdditionalRAM:  ;; things that are not copied from ROM at the beginning
 
@@ -308,6 +288,14 @@ title_state:            ds virtual 1
 title_state2:           ds virtual 1
 
 memoryToClearOnNewGame:
+
+game_over_cycle:        ds virtual 1
+player_hit_timmer:      ds virtual 1
+player_mana:            ds virtual 1
+player_keys:            ds virtual 1
+player_state:           ds virtual 1
+player_state_cycle:     ds virtual 1
+spritePatternCacheTableNextToErase:     ds virtual 1
 
 ; sprites:
 knight_sprite_attributes:           ds virtual 4
@@ -387,6 +375,7 @@ SFX_play:                           ds virtual 1
 MUSIC_play:                         ds virtual 1
 MUSIC_tempo_counter:                ds virtual 1
 MUSIC_instruments:                  ds virtual 3
+MUSIC_channel3_instrument_buffer:   ds virtual 1    ;; this stores the instrument of channel 3, which is special, since SFX might overwrite it
 ;MUSIC_skip_counter:                 ds virtual 1
 MUSIC_start_pointer:                ds virtual 2  
 SFX_pointer:                        ds virtual 2
