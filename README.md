@@ -71,7 +71,9 @@ Keyboard:
 * 1 					- change your primary weapon
 * 2 					- change your secondary weapon
 * 3 					- change your armor
+* P                     - pause the game
 * 0 					- change the gameplay viewport size
+* R                     - toggle CPU mode (MSX2+ Turbo R only). There are 3 modes available: Z80 (the same way it runs for other MSX models), R800-smooth (game runs at the same speed, but with smoother movement as the R800 can render twice as many frames per second), and R800-fast (which basically just runs the Z80 code, but at the speed of the R800, and makes the game just go twice as fast).
 
 Joystick:
 * Left/right - rotate Popolon
