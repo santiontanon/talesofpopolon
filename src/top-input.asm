@@ -7,7 +7,7 @@ checkTrigger1:
     and #01
     ret nz
     call readJoystick1Status
-    and #01
+    and #10
     ret
 
 
@@ -20,7 +20,7 @@ checkTrigger2:
     and #04
     ret nz
     call readJoystick1Status
-    and #02
+    and #20
     ret
 
 
@@ -131,7 +131,7 @@ checkInput:
     or b        ;; we bring the state of M from before
     jr z,Readjoystick   ;; if no key was pressed, then check the joystick
     bit 0,a
-    jr nz,checkInput_Trigger1Pressed    ;; when trigger 1 is hold, movement changes, so, we have a different function
+    call nz,Trigger1Pressed    ;; when trigger 1 is hold, movement changes, so, we have a different function
     bit 2,a
     call nz,Trigger2Pressed
     bit 7,a
@@ -143,73 +143,56 @@ checkInput:
     bit 6,a
     call nz,MoveBackwards
 
+    ld hl,previous_trigger1
+    bit 0,a
+    jr nz,checkInput_trigger1WasPressed
+    ld (hl),0
+    jr checkInput_checkTrigger2
+checkInput_trigger1WasPressed:
+    ld (hl),1
+checkInput_checkTrigger2:
+    ld hl,previous_trigger2
     bit 2,a
     jr nz,checkInput_trigger2WasPressed
-    xor a
-    ld (previous_trigger2),a
-    ld (previous_trigger1),a
+    ld (hl),0
     ret
 checkInput_trigger2WasPressed:
-    ld a,1
-    ld (previous_trigger2),a
-    xor a
-    ld (previous_trigger1),a
+    ld (hl),1
     ret
 
 Readjoystick:   
     ;; Using BIOS calls:
     call readJoystick1Status
-    bit 0,a
-    jr nz,ReadJoystick_Trigger1Pressed    ;; when trigger 1 is hold, movement changes, so, we have a different function
-    bit 1,a
+    bit 4,a
+    call nz,Trigger1Pressed    ;; when trigger 1 is hold, movement changes, so, we have a different function
+    bit 5,a
     call nz,Trigger2Pressed
     bit 3,a
     call nz,TurnRight
     bit 2,a
     call nz,TurnLeft
-    bit 4,a
+    bit 0,a
     call nz,MoveForward
-    bit 5,a
+    bit 1,a
     call nz,MoveBackwards
 
-    bit 1,a
-    jr nz,checkInput_trigger2WasPressed
-    xor a
-    ld (previous_trigger2),a
-    ld (previous_trigger1),a
-    ret
-;Readjoystick_trigger2WasPressed:
-;    ld a,1
-;    ld (previous_trigger2),a
-;    xor a
-;    ld (previous_trigger1),a
-;    ret
-
-checkInput_Trigger1Pressed  ;; this is different, since players "straffe" when going left/right
-    call Trigger1Pressed
-    bit 2,a
-    call nz,Trigger2Pressed
-    bit 7,a
-    call nz,MoveRight
+    ld hl,previous_trigger1
     bit 4,a
-    call nz,MoveLeft
+    jr nz,Readjoystick_trigger1WasPressed
+    ld (hl),0
+    jr Readjoystick_checkTrigger2
+Readjoystick_trigger1WasPressed:
+    ld (hl),1
+Readjoystick_checkTrigger2:
+    ld hl,previous_trigger2
     bit 5,a
-    call nz,MoveForward
-    bit 6,a
-    call nz,MoveBackwards
+    jr nz,Readjoystick_trigger2WasPressed
+    ld (hl),0
+    ret
+Readjoystick_trigger2WasPressed:
+    ld (hl),1
+    ret
 
-    bit 1,a
-    jr nz,checkInput_Trigger1Pressed_trigger2WasPressed
-    xor a
-    ld (previous_trigger2),a
-    inc a
-    ld (previous_trigger1),a
-    ret
-checkInput_Trigger1Pressed_trigger2WasPressed:
-    ld a,1
-    ld (previous_trigger2),a
-    ld (previous_trigger1),a
-    ret
 
 checkInput_request_screen_size_change:
     ld hl,raycast_screen_size_change_requested
@@ -227,31 +210,6 @@ checkInput_request_CPUmode_change_wait_for_R_released:
     pop af
     ret
 
-ReadJoystick_Trigger1Pressed:
-    call Trigger1Pressed
-    bit 1,a
-    call nz,Trigger2Pressed
-    bit 3,a
-    call nz,MoveRight
-    bit 2,a
-    call nz,MoveLeft
-    bit 4,a
-    call nz,MoveForward
-    bit 5,a
-    call nz,MoveBackwards
-
-    bit 1,a
-    jr nz,checkInput_Trigger1Pressed_trigger2WasPressed
-    xor a
-    ld (previous_trigger2),a
-    inc a
-    ld (previous_trigger1),a
-    ret
-;ReadJoystick_Trigger1Pressed_trigger2WasPressed:
-;    ld a,1
-;    ld (previous_trigger2),a
-;    ld (previous_trigger1),a
-;    ret
 
 Trigger1Pressed:
     push af
@@ -293,6 +251,9 @@ Trigger2Pressed_continue:
 
 TurnLeft:
     push af
+    ld a,(previous_trigger1)
+    or a
+    jp nz,MoveLeft_nopush
     ld a,(player_angle)
     add a,-4
     ld (player_angle),a
@@ -301,6 +262,9 @@ TurnLeft:
 
 TurnRight:  
     push af
+    ld a,(previous_trigger1)
+    or a
+    jp nz,MoveRight_nopush
     ld a,(player_angle)
     add a,4
     ld (player_angle),a
@@ -390,6 +354,7 @@ MoveBackwards_do_not_reset_angle:
 
 MoveRight:  
     push af
+MoveRight_nopush:
     ld a,(player_angle)
     add a,64
     ld (player_angle),a
@@ -402,6 +367,7 @@ MoveRight:
 
 MoveLeft:  
     push af
+MoveLeft_nopush:
     ld a,(player_angle)
     add a,-64
     ld (player_angle),a

@@ -12,7 +12,15 @@
 ;-----------------------------------------------
 ; Code that gets executed when the game starts
 Execute:
+    ; init the stack:
     ld sp,#F380
+    ; reset some interrupts to make sure it runs in some MSX computers 
+    ; with disk controllers installed in some interrupt handlers
+    di
+    ld a,#C9
+    ld (#FD9a),a
+    ld (#FD9F),a
+    ei
 
     call setupROMRAMslots
 
