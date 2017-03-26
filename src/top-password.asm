@@ -107,6 +107,8 @@ Password_loop_TestPassword:
     ld c,0  ; c will keep the XOR
 Password_loop_TestPassword_to_bytes:
     ld a,(hl)
+    or a
+    jr z,Password_loop_TestPassword_failed
     cp 'A'
     jp m,Password_loop_TestPassword_noletter
     sub 43   ; make the letters be just before the numbers
@@ -122,17 +124,24 @@ Password_loop_TestPassword_noletter:
     or a
     jr z,Password_loop_TestPassword_passesXORtest
 
+Password_loop_TestPassword_failed:
     ld hl,SFX_playerhit
     call playSFX
-Password_loop_TestPassword_doesnotpasshealthtest:
     exx ; restore DE/HL for the password loop
     jp Password_loop_loop
 
 Password_loop_TestPassword_passesXORtest:
-    ; check health is > 0:
+    ; check health is > 0 and <=16:
     ld a,(password_buffer+1)
     or a
-    jr z,Password_loop_TestPassword_doesnotpasshealthtest
+    jr z,Password_loop_TestPassword_failed
+    cp 17
+    jp p,Password_loop_TestPassword_failed
+
+    ; check mana is <=31:
+    ld a,(password_buffer+2)
+    cp 32
+    jp p,Password_loop_TestPassword_failed
 
     call initializeGame
 
