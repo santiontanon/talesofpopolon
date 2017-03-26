@@ -58,7 +58,7 @@ messages_map:
     dw 22*12 ;; length of the message data block below
     db "OH GODS OF OLYMPUS!   "
     db "THIS PLACE IS FULL OF "
-    db "TRAPED SOULS. THIS IS "
+    db "TRAPPED SOULS. THIS IS"
     db "A TORTURE CHAMBER!    "
 
     db "   A PRISONER SAYS:   "
