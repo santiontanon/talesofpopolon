@@ -102,7 +102,7 @@ TitleScreen_Loop_loop3: ;; "underline" coming in
 
     xor a
     ld (title_state),a
-    ld a,(previous_trigger1)
+    ld (previous_trigger1),a
 TitleScreen_Loop_loop:
     call TitleScreen_update_bg_sprites
 

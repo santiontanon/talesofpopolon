@@ -157,10 +157,12 @@ GameStory_draw_vignette:
 
     ; unpack the pattern and attribute data:
     ld de,raycast_color_buffer
+    push de
     call pletter_unpack
 
     ; copy the pattern data:
-    ld hl,raycast_color_buffer
+    pop hl
+;    ld hl,raycast_color_buffer
     ld de,CHRTBL2+100*8
     ld bc,18*8  ; it's probably less, but in this way, I don't need to compute it
     call LDIRVM

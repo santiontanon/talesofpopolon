@@ -301,12 +301,11 @@ Pasword_lop_TestPassword_decoding_items_item4_notpickedup:
     inc hl
     inc de
     ; inc HL MAX_PICKUPS_PER_MAP-4
-    push bc
-    ld bc,MAX_PICKUPS_PER_MAP-4
+    push hl
+    ld hl,MAX_PICKUPS_PER_MAP-4
+    add hl,de
     ex de,hl
-    add hl,bc
-    ex de,hl
-    pop bc
+    pop hl
     djnz Pasword_lop_TestPassword_decoding_items_loop
 
     ld a,1
@@ -317,6 +316,11 @@ Pasword_lop_TestPassword_decoding_items_item4_notpickedup:
     call ChangeWeapon_next_found
     call ChangeSecondaryWeapon_next_found
     call ChangeArmor_next_found
+
+    ; clear the message:
+    ld hl,splash_line1+5    ; this points to a space
+    ld c,1
+    call displayUIMessage
 
     ; decode start location:
     ; assume it's fortress1:
@@ -580,12 +584,11 @@ triggerEvent_generatePassword_items4_zero:
     ld (hl),c
     inc hl
 
-    push bc
-    ld bc,MAX_PICKUPS_PER_MAP-3
+    push hl
+    ld hl,MAX_PICKUPS_PER_MAP-3
+    add hl,de
     ex de,hl
-    add hl,bc
-    ex de,hl
-    pop bc
+    pop hl
 
     djnz triggerEvent_generatePassword_items_loop
 

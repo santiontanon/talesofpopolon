@@ -1034,21 +1034,19 @@ triggerEvent_drawMessageFrame_loop1:
     ld b,4
 triggerEvent_drawMessageFrame_loop2:
     call copyWhitePatternFromBank3ToBank1
-    push bc
-    ld bc,8
+
+    push hl
+    ld hl,8
+    add hl,de
     ex de,hl
-    add hl,bc
-    ex de,hl
-    pop bc
+    pop hl
     djnz triggerEvent_drawMessageFrame_loop2
 
-    push bc
-    ld bc,4*8
+    push hl
+    ld hl,4*8
+    add hl,de
     ex de,hl
-    add hl,bc
-    ex de,hl
-    pop bc
-
+    pop hl
     dec c
     jr nz,triggerEvent_drawMessageFrame_loop1
 
@@ -1056,13 +1054,16 @@ triggerEvent_drawMessageFrame_loop2:
     ld hl,CHRTBL2+(#800*2)+8*100
     ld de,CHRTBL2
     call copyWhitePatternFromBank3ToBank1
-    ld hl,CHRTBL2+(#800*2)+8*102
+;    ld hl,CHRTBL2+(#800*2)+8*102
+    ld l,(CHRTBL2+(#800*2)+8*102)%256
     ld de,CHRTBL2+23*8*8
     call copyWhitePatternFromBank3ToBank1
-    ld hl,CHRTBL2+(#800*2)+8*104
+;    ld hl,CHRTBL2+(#800*2)+8*104
+    ld l,(CHRTBL2+(#800*2)+8*104)%256
     ld de,CHRTBL2+5*8
     call copyWhitePatternFromBank3ToBank1
-    ld hl,CHRTBL2+(#800*2)+8*105
+;    ld hl,CHRTBL2+(#800*2)+8*105
+    ld l,(CHRTBL2+(#800*2)+8*105)%256
     ld de,CHRTBL2+(23*8+5)*8
     call copyWhitePatternFromBank3ToBank1
 
