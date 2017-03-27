@@ -1,2 +1,2 @@
-java -jar java/glass-0.5.jar src/top-main.asm ToP.rom ToP.sym
-
+java -jar java/glass-0.5.jar src/top-main.asm ToP-en.rom ToP-en.sym
+java -jar java/glass-0.5.jar src/es/top-main-es.asm ToP-es.rom ToP-es.sym

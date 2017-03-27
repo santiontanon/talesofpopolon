@@ -1,4 +1,4 @@
-    include "top-constants.asm"
+    include "../top-constants.asm"
 
     org #4000   ; Start in the 2nd slot
 
@@ -62,44 +62,44 @@ Execute:
 
 ;-----------------------------------------------
 ; additional assembler files
-    include "top-auxiliar.asm"
-    include "top-gamestates.asm"
-    include "top-splash.asm"
-    include "top-title.asm"
-    include "top-story.asm"    
-    include "top-gameloop.asm"
-    include "top-gameplay.asm"
-    include "top-input.asm"
-    include "top-sincostables.asm"
-    include "top-gfx.asm"
-    include "top-raycasting.asm"
-    include "top-maps.asm"
-    include "top-enemies.asm"
-    include "top-sound.asm"
-    include "top-password.asm"
+    include "../top-auxiliar.asm"
+    include "../top-gamestates.asm"
+    include "../top-splash.asm"
+    include "../top-title.asm"
+    include "../top-story.asm"    
+    include "../top-gameloop.asm"
+    include "../top-gameplay.asm"
+    include "../top-input.asm"
+    include "../top-sincostables.asm"
+    include "../top-gfx.asm"
+    include "../top-raycasting.asm"
+    include "../top-maps.asm"
+    include "../top-enemies.asm"
+    include "../top-sound.asm"
+    include "../top-password.asm"
 
 story_pletter:
-    incbin "tocompress/story.plt"
+    incbin "tocompress/story-es.plt"
 ending_pletter:
-    incbin "tocompress/ending.plt"
+    incbin "tocompress/ending-es.plt"
 map_tunnel1_pletter:
-    incbin "tocompress/map-tunnel1.plt"
+    incbin "tocompress/map-tunnel1-es.plt"
 map_fortress1_pletter:
-    incbin "tocompress/map-fortress1.plt"
+    incbin "tocompress/map-fortress1-es.plt"
 map_fortress2_pletter:
-    incbin "tocompress/map-fortress2.plt"
+    incbin "tocompress/map-fortress2-es.plt"
 map_catacombs1_pletter:
-    incbin "tocompress/map-catacombs1.plt"
+    incbin "tocompress/map-catacombs1-es.plt"
 map_catacombs2_pletter:
-    incbin "tocompress/map-catacombs2.plt"
+    incbin "tocompress/map-catacombs2-es.plt"
 map_medusa1_pletter:
-    incbin "tocompress/map-medusa1.plt"
+    incbin "../tocompress/map-medusa1.plt"
 map_medusa2_pletter:
-    incbin "tocompress/map-medusa2.plt"
+    incbin "../tocompress/map-medusa2.plt"
 map_keres1_pletter:
-    incbin "tocompress/map-keres1.plt"
+    incbin "tocompress/map-keres1-es.plt"
 map_keres2_pletter:
-    incbin "tocompress/map-keres2.plt"
+    incbin "tocompress/map-keres2-es.plt"
 
 ;-----------------------------------------------
 ; Game variables to be copied to RAM
@@ -200,36 +200,36 @@ ROM_initial_rendering_blocks_128:
     db 16
 
 UI_message_equip_barehand:
-    db "BARE HANDS"
+    db "MANOS"
 UI_message_equip_barehand_end:
 UI_message_equip_sword:
-    db "SWORD"
+    db "ESPADA"
 UI_message_equip_sword_end:
 UI_message_equip_goldsword:
-    db "GOLD SWORD"
+    db "ESPADA DE ORO"
 UI_message_equip_goldsword_end:
 
 UI_message_equip_secondary_barehand:
-    db "BARE HANDS"
+    db "MANOS"
 UI_message_equip_secondary_barehand_end:
 UI_message_equip_secondary_arrow:
-    db "ARROWS"
+    db "FLECHAS"
 UI_message_equip_secondary_arrow_end:
 UI_message_equip_secondary_icearrow:
-    db "ICE ARROWS"
+    db "FLECHAS DE HIELO"
 UI_message_equip_secondary_icearrow_end:
 UI_message_equip_secondary_hourglass:
-    db "HOURGLASS"
+    db "RELOJ"
 UI_message_equip_secondary_hourglass_end:
 
 UI_message_equip_armor_iron:
-    db "IRON ARMOR"
+    db "ARMADURA DE HIERRO"
 UI_message_equip_armor_iron_end:
 UI_message_equip_armor_silver:
-    db "SILVER ARMOR"
+    db "ARMADURA DE PLATA"
 UI_message_equip_armor_silver_end:
 UI_message_equip_armor_gold:
-    db "GOLD ARMOR"
+    db "AMRADURA DE ORO"
 UI_message_equip_armor_gold_end:
 
 UI_message_z80_mode:
@@ -253,14 +253,14 @@ UI_message_game_over:
     db "GAME OVER"
 
 UI_message_enter_password:
-    db "ENTER PASSWORD"
+    db "ENTRA LA CLAVE"
 UI_message_enter_password_end:
 
 splash_line2:  ; length 8
-    db "PRESENTS"
+    db "PRESENTA"
 
 title_press_space:  ; length: 19
-    db "PRESS SPACE TO PLAY"    
+    db " ESPACIO PARA JUGAR"
 
 title_credits:  ; length 20
     db "SANTI ONTANON   2017"

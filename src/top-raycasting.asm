@@ -1080,7 +1080,7 @@ raycast_reset_loop1:
     inc hl
     djnz raycast_reset_loop1
     dec c
-    jp nz,raycast_reset_loop1
+    jr nz,raycast_reset_loop1
     ENDIF
 
     ; now set the names for the area that will be drawn
@@ -1120,6 +1120,7 @@ raycast_reset_clear_buffer:
     ld (hl),a
 ;    ld bc,(32-RAYCAST_SIDE_BORDER*2)*8*8*2
     ld bc,(raycast_amount_to_clear)
+    push bc
 raycast_reset_clear_buffer_loop1:
     REPT 16
     ldi
@@ -1130,8 +1131,9 @@ raycast_reset_clear_buffer_loop1:
     ld de,raycast_buffer+(32-RAYCAST_SIDE_BORDER*2)*8*8+1
     xor a
     ld (hl),a
+    pop bc
 ;    ld bc,(32-RAYCAST_SIDE_BORDER*2)*8*8*2
-    ld bc,(raycast_amount_to_clear)
+;    ld bc,(raycast_amount_to_clear)
 raycast_reset_clear_buffer_loop2:
     REPT 16
     ldi
@@ -1143,8 +1145,9 @@ raycast_reset_clear_buffer_loop2:
         ld de,raycast_color_buffer+1
         ld a,(raycast_ceiling_texture_color)
         ld (hl),a
-        ld bc,(raycast_amount_to_clear)
 ;        ld bc,(32-RAYCAST_SIDE_BORDER*2)*8*8
+        ld bc,(raycast_amount_to_clear)
+        push bc
 raycast_reset_clear_buffer_loop3:
         REPT 16
         ldi
@@ -1155,8 +1158,9 @@ raycast_reset_clear_buffer_loop3:
         ld de,raycast_color_buffer+(32-RAYCAST_SIDE_BORDER*2)*8*8+1
         ld a,(raycast_floor_texture_color)
         ld (hl),a
+        pop bc
 ;        ld bc,(32-RAYCAST_SIDE_BORDER*2)*8*8
-        ld bc,(raycast_amount_to_clear)
+;        ld bc,(raycast_amount_to_clear)
 raycast_reset_clear_buffer_loop4:
         REPT 16
         ldi

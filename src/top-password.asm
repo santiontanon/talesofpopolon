@@ -6,7 +6,7 @@ Password_loop:
     ; print enter password string:
     ld hl,UI_message_enter_password
     ld de,NAMTBL2+256+9
-    ld bc,14
+    ld bc,UI_message_enter_password_end-UI_message_enter_password
     call LDIRVM
 
     ; reset the password string:
@@ -160,30 +160,40 @@ Password_loop_TestPassword_passesXORtest:
     ld de,available_weapons+1
     ld a,1
     ld b,(hl)
+    push hl
+    ld hl,current_weapon
     bit 0,b
     jr z,Password_loop_TestPassword_no_sword
     ld (de),a
+    ld (hl),a
 Password_loop_TestPassword_no_sword:
     inc de
     bit 1,b
     jr z,Password_loop_TestPassword_no_goldsword
     ld (de),a
+    ld (hl),2
 Password_loop_TestPassword_no_goldsword:
+
     ld de,available_secondary_weapons+1
+    ld hl,current_secondary_weapon
     bit 2,b
     jr z,Password_loop_TestPassword_no_arrows
     ld (de),a
+    ld (hl),a
 Password_loop_TestPassword_no_arrows:
     inc de
     bit 3,b
     jr z,Password_loop_TestPassword_no_icearrows
     ld (de),a
+    ld (hl),2
 Password_loop_TestPassword_no_icearrows:
     inc de
     bit 4,b
     jr z,Password_loop_TestPassword_no_hourglass
     ld (de),a
+    ld (hl),3
 Password_loop_TestPassword_no_hourglass:
+    pop hl
     inc hl
 
     ; decode armors:
@@ -194,6 +204,11 @@ Pasword_lop_TestPassword_decoding_armors_loop:
     bit 4,c
     jr z,Password_loop_TestPassword_no_armor
     ld (de),a
+    ; set it as the current armor:
+    ld a,b
+    xor #03 ; turn 1 into 2 and 2 into 1
+    ld (current_armor),a
+    ld a,1
 Password_loop_TestPassword_no_armor:
     inc de
     inc hl
@@ -297,6 +312,11 @@ Pasword_lop_TestPassword_decoding_items_item4_notpickedup:
     ld a,1
     ld (globalState_itemsPickedUp+4),a  ;; the 5th item (a key) needs to have been picked up to 
                                         ;; save a password, but we are not saving it to save a bit
+
+    ; change the weapons to the selected ones:
+    call ChangeWeapon_next_found
+    call ChangeSecondaryWeapon_next_found
+    call ChangeArmor_next_found
 
     ; decode start location:
     ; assume it's fortress1:
@@ -478,8 +498,7 @@ triggerEvent_generatePassword_bosskilled_zero:
     djnz triggerEvent_generatePassword_bosskilled_loop
 
     ; save the save location (fortress1 or fortress2):
-    ld a,#10
-    ld (hl),a   ; save "fortress2" temporarily
+    ld (hl),#10   ; save "fortress2" temporarily
 
     ld a,(player_map)
     cp MAP_FORTRESS1

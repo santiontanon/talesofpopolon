@@ -289,21 +289,15 @@ assignSprite_not_an_icearrow:
     sla b
     sla b   ;; note: this assumes that N_SPRITES_PER_DEPTH = 4
     add a,b
-    ld hl,other_sprite_attributes
+    ld de,other_sprite_attributes
     add a,a   
     add a,a   
-    ADD_HL_A
-    ld a,(assignSprite_y)
-    ld (hl),a
-    inc hl
-    ld a,(assignSprite_x)
-    ld (hl),a
-    inc hl
-    ld a,(assignSprite_sprite)
-    ld (hl),a
-    inc hl
-    ld a,(assignSprite_color)
-    ld (hl),a
+    ADD_DE_A
+    ld hl,assignSprite_y
+    ldi
+    ldi
+    ldi
+    ldi
     ret
 
 

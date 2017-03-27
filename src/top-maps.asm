@@ -664,23 +664,3 @@ quick_lineOfSightCheck_y_decrease:
     jp quick_lineOfSightCheck_y_loop
 
 
-map_tunnel1_pletter:
-    incbin "tocompress/map-tunnel1.plt"
-map_fortress1_pletter:
-    incbin "tocompress/map-fortress1.plt"
-map_fortress2_pletter:
-    incbin "tocompress/map-fortress2.plt"
-map_catacombs1_pletter:
-    incbin "tocompress/map-catacombs1.plt"
-map_catacombs2_pletter:
-    incbin "tocompress/map-catacombs2.plt"
-map_medusa1_pletter:
-    incbin "tocompress/map-medusa1.plt"
-map_medusa2_pletter:
-    incbin "tocompress/map-medusa2.plt"
-map_keres1_pletter:
-    incbin "tocompress/map-keres1.plt"
-map_keres2_pletter:
-    incbin "tocompress/map-keres2.plt"
-
-

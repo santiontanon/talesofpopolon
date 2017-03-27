@@ -217,11 +217,4 @@ story_block4_lines: EQU 10
 
 ending_block1_lines: EQU 11
 
-
-story_pletter:
-    incbin "tocompress/story.plt"
-
-ending_pletter:
-    incbin "tocompress/ending.plt"
-
     include "top-story-patterns.asm"

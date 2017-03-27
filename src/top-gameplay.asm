@@ -78,7 +78,7 @@ updatePlayer_flashin:
 updatePlayer_continue:
     ld a,(player_state)
     or a
-    jp z,updatePlayer_walking
+    jr z,updatePlayer_walking
     dec a
     jr z,updatePlayer_attack
     jr updatePlayer_cooldown
@@ -371,10 +371,11 @@ ChangeWeapon:
     ld hl,SFX_weapon_switch
     call playSFX
 
-    ld a,(current_weapon)
+    ld de,current_weapon
+    ld a,(de)
     inc a
 ChangeWeapon_next_loop:
-    ld (current_weapon),a
+    ld (de),a
     cp N_WEAPONS
     jr z,ChangeWeapon_overflow
     ld hl,available_weapons
@@ -467,10 +468,11 @@ ChangeSecondaryWeapon:
     call playSFX
 
     ;; find the next available secondary weapon:
-    ld a,(current_secondary_weapon)
+    ld de,current_secondary_weapon
+    ld a,(de)
     inc a
 ChangeSecondaryWeapon_next_loop:
-    ld (current_secondary_weapon),a
+    ld (de),a
     cp N_SECONDARY_WEAPONS
     jr z,ChangeSecondaryWeapon_overflow
     ld hl,available_secondary_weapons
@@ -526,10 +528,11 @@ ChangeArmor:
     call playSFX
 
     ;; find the next available armor:
-    ld a,(current_armor)
+    ld de,current_armor
+    ld a,(de)
     inc a
 ChangeArmor_next_loop:
-    ld (current_armor),a
+    ld (de),a
     cp N_ARMORS
     jr z,ChangeArmor_overflow
     ld hl,available_armors
@@ -542,7 +545,7 @@ ChangeArmor_overflow:
     xor a
     jr ChangeArmor_next_loop
 ChangeArmor_next_found:
-    ld a,(current_armor)
+    ld a,(current_armor)    ;; I do not reuse "de" here, since "ChangeArmor_next_found" can be called by the password decoding code
     or a
     jr z,ChangeArmor_default
     dec a
@@ -849,8 +852,23 @@ triggerEvent_OpenGate_removeWall:
     pop hl
     ret
 triggerEvent_OpenGate_addWall:
-    ld a,6
-    ld (hl),a
+    ld (hl),6
+
+    ; check if we are closing a gate on top of the player
+    ld hl,player_x
+    ld c,(hl)
+    inc hl
+    ld b,(hl)
+    call getMapPosition
+    cp 6    ; if this is true, the player is dead...
+    jr nz,triggerEvent_OpenGate_addWall_not_ontop_of_player
+    xor a
+    ld (player_health),a
+    ld a,GAME_STATE_GAME_OVER
+    ld (game_state),a
+    call update_UI_health    
+
+triggerEvent_OpenGate_addWall_not_ontop_of_player:
     pop hl
     ret
 

@@ -9,7 +9,6 @@ Game_Loop_after_setting_map:
     call update_UI_keys
     call update_UI_health
     call update_UI_mana
-    call setupSprites
     call raycast_reset    
 
     ;; the very first time, start by rendering the background:
@@ -17,7 +16,7 @@ Game_Loop_after_setting_map:
     
 Game_Loop_loop:
 
-;    out (#2c),a    
+    out (#2c),a    
 
     ;; ---- SUBFRAME 1 ----
     call Game_Update_Cycle
@@ -73,7 +72,7 @@ Game_Loop_loop:
 
     call saveLastRaycastVariables
 
-;    out (#2d),a    
+    out (#2d),a    
 
     jr Game_Loop_loop
 
@@ -209,5 +208,11 @@ initializeGame:
     ld (Music_tempo),a
     ld hl,LoPInGameSongPletter
     call PlayCompressedSong
+
+    ld hl,textures_pletter
+    ld de,textures
+    call pletter_unpack
+
+    call setupSprites
 
     jp setupUIPatterns

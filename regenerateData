@@ -44,6 +44,17 @@ java -jar java/glass-0.5.jar src/tocompress/ToPBossSong.asm src/tocompress/ToPBo
 java -jar java/glass-0.5.jar src/tocompress/ToPStartSong.asm src/tocompress/ToPStartSong.bin
 java -jar java/glass-0.5.jar src/tocompress/ToPGameOverSong.asm src/tocompress/ToPGameOverSong.bin
 
+# Spanish files:
+java -jar java/glass-0.5.jar src/es/tocompress/map-tunnel1-es.asm src/es/tocompress/map-tunnel1-es.bin
+java -jar java/glass-0.5.jar src/es/tocompress/map-fortress1-es.asm src/es/tocompress/map-fortress1-es.bin
+java -jar java/glass-0.5.jar src/es/tocompress/map-fortress2-es.asm src/es/tocompress/map-fortress2-es.bin
+java -jar java/glass-0.5.jar src/es/tocompress/map-catacombs1-es.asm src/es/tocompress/map-catacombs1-es.bin
+java -jar java/glass-0.5.jar src/es/tocompress/map-catacombs2-es.asm src/es/tocompress/map-catacombs2-es.bin
+java -jar java/glass-0.5.jar src/es/tocompress/map-keres1-es.asm src/es/tocompress/map-keres1-es.bin
+java -jar java/glass-0.5.jar src/es/tocompress/map-keres2-es.asm src/es/tocompress/map-keres2-es.bin
+java -jar java/glass-0.5.jar src/es/tocompress/story-es.asm src/es/tocompress/story-es.bin
+java -jar java/glass-0.5.jar src/es/tocompress/ending-es.asm src/es/tocompress/ending-es.bin
+
 java -cp java/MSXTools.jar utils.Pletter src/tocompress/map-tunnel1.bin src/tocompress/map-tunnel1.plt
 java -cp java/MSXTools.jar utils.Pletter src/tocompress/map-fortress1.bin src/tocompress/map-fortress1.plt
 java -cp java/MSXTools.jar utils.Pletter src/tocompress/map-fortress2.bin src/tocompress/map-fortress2.plt
@@ -72,4 +83,17 @@ java -cp java/MSXTools.jar utils.Pletter src/tocompress/ToPBossSong.bin src/toco
 java -cp java/MSXTools.jar utils.Pletter src/tocompress/ToPStartSong.bin src/tocompress/ToPStartSong.plt
 java -cp java/MSXTools.jar utils.Pletter src/tocompress/ToPGameOverSong.bin src/tocompress/ToPGameOverSong.plt
 
+# Spanish files:
+java -cp java/MSXTools.jar utils.Pletter src/es/tocompress/map-tunnel1-es.bin src/es/tocompress/map-tunnel1-es.plt
+java -cp java/MSXTools.jar utils.Pletter src/es/tocompress/map-fortress1-es.bin src/es/tocompress/map-fortress1-es.plt
+java -cp java/MSXTools.jar utils.Pletter src/es/tocompress/map-fortress2-es.bin src/es/tocompress/map-fortress2-es.plt
+java -cp java/MSXTools.jar utils.Pletter src/es/tocompress/map-catacombs1-es.bin src/es/tocompress/map-catacombs1-es.plt
+java -cp java/MSXTools.jar utils.Pletter src/es/tocompress/map-catacombs2-es.bin src/es/tocompress/map-catacombs2-es.plt
+java -cp java/MSXTools.jar utils.Pletter src/es/tocompress/map-keres1-es.bin src/es/tocompress/map-keres1-es.plt
+java -cp java/MSXTools.jar utils.Pletter src/es/tocompress/map-keres2-es.bin src/es/tocompress/map-keres2-es.plt
+java -cp java/MSXTools.jar utils.Pletter src/es/tocompress/story-es.bin src/es/tocompress/story-es.plt
+java -cp java/MSXTools.jar utils.Pletter src/es/tocompress/ending-es.bin src/es/tocompress/ending-es.plt
+
+
 rm src/tocompress/*.bin
+rm src/es/tocompress/*.bin

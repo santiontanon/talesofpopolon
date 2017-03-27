@@ -1,0 +1,37 @@
+	org #0000
+
+story_block1:
+    db "DURANTE SIGLOS, EL MUNDO HABIA  "
+    db "ESTADO EN PAZ. LAS TIERRAS ERAN "
+    db "PROSPERAS, Y LA GENTE LLEGABA A "
+    db "AVANZADA EDAD.                  "
+    db "                                "
+    db "PERO TODO ESTABA A PUNTO DE     "
+    db "CAMBIAR...                      "
+story_block2:
+    db "DE REPENTE, BESTIAS ATACARON    "
+    db "POBLADOS, MATANDO SIN COMPASION."
+    db "TORMENTAS HUNDIERON BARCOS Y    "
+    db "ARRUINARON LAS COSECHAS.        "
+    db "                                "
+    db "MUCHOS PENSARON QUE LOS DIOSES  "
+    db "LES HABIAN ABANDONADO...        "
+story_block3:
+    db "UNA NOCHE, THANATOS, DIOS DE LA "
+    db "MUERTE SERENA, SE APARECIO EN   "
+    db "LA NOCHE A POPOLON:             "
+    db "                                "
+    db "POPOLON, SOY THANATOS!          "
+    db "LOS DIOSES DEL OLIMPO NECESITAN "
+    db "TU AYUDA!                       "
+story_block4:
+    db "UNA FORTALEZA MALVADA HA SIDO   "
+    db "CONSTRUIDA EN OLIMPO CONTRA     "
+    db "NUESTRA VOLUNTAD! ALGUIEN ESTA  "
+    db "CAUSANDO MUERTES Y ATRAPANDO LAS"
+    db "ALMAS EN LA FORTALEZA, IMIDIENDO"
+    db "QUE LLEGUEN AL REINO DE HADES!  "
+    db "                                "
+    db "ERES NUESTRA ESPERANZA! SOLO    "
+    db "ALMAS MORTALES PUEDEN ENTRAR.   "
+    db "VE Y PON FRENO A ESTA MALDAD!   "
