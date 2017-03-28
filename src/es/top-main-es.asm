@@ -22,8 +22,8 @@ Execute:
     ; with disk controllers installed in some interrupt handlers
     di
     ld a,#C9
-    ld (#FD9a),a
-    ld (#FD9F),a
+    ld (HKEY),a
+;    ld (TIMI),a
     ei
 
     call setupROMRAMslots

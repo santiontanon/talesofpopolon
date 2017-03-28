@@ -22,8 +22,8 @@ Execute:
     ; with disk controllers installed in some interrupt handlers
     di
     ld a,#C9
-    ld (#FD9a),a
-    ld (#FD9F),a
+    ld (HKEY),a
+;    ld (TIMI),a
     ei
 
     call setupROMRAMslots
@@ -33,6 +33,7 @@ Execute:
     ld (CLIKSW),a
     ld (MSXTurboRMode),a    ; Z80 mode
 
+    ld hl,CPUmode_change_requested
     call Game_trigger_CPUmode_change    ; if we are in a turbo R, switch to R800 smooth mode
     
     ld a,2      ; Change screen mode

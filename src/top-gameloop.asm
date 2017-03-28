@@ -156,6 +156,9 @@ Game_trigger_screen_size_change2:
     ldir
     jp raycast_reset
     
+    
+;-----------------------------------------------
+; This function assumes that hl is pointing to "CPUmode_change_requested"
 ; modes are:
 ; 0: Z80
 ; 1: R800 smooth
