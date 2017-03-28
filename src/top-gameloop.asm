@@ -16,7 +16,7 @@ Game_Loop_after_setting_map:
     
 Game_Loop_loop:
 
-    out (#2c),a    
+;    out (#2c),a    
 
     ;; ---- SUBFRAME 1 ----
     call Game_Update_Cycle
@@ -60,19 +60,19 @@ Game_Loop_loop:
     call raycast_render_to_buffer
     call raycast_render_buffer
 
-    ld hl,raycast_screen_size_change_requested
-    ld a,(hl)
+    ld a,(raycast_screen_size_change_requested)
     or a
     call nz,Game_trigger_screen_size_change
-
-    ld hl,CPUmode_change_requested
-    ld a,(hl)
+    ld a,(CPUmode_change_requested)
     or a
     call nz,Game_trigger_CPUmode_change
+    xor a
+    ld (raycast_screen_size_change_requested),a
+    ld (CPUmode_change_requested),a
 
     call saveLastRaycastVariables
 
-    out (#2d),a    
+;    out (#2d),a    
 
     jr Game_Loop_loop
 
@@ -139,8 +139,6 @@ Game_updateRaycastVariables:
 
 
 Game_trigger_screen_size_change:
-    xor a
-    ld (hl),a
     ld a,(initial_rendering_blocks+4)
     cp 192
     ld hl,ROM_initial_rendering_blocks_160
@@ -156,16 +154,13 @@ Game_trigger_screen_size_change2:
     ldir
     jp raycast_reset
     
-    
+
 ;-----------------------------------------------
-; This function assumes that hl is pointing to "CPUmode_change_requested"
 ; modes are:
 ; 0: Z80
 ; 1: R800 smooth
 ; 2: R800 fast
 Game_trigger_CPUmode_change:
-    xor a
-    ld (hl),a   ;; set CPUmode_change_requested = 0
     ld a,(CHGCPU)
     cp #C3
     ret nz  ; if we are not in a turbo R, just ignore
