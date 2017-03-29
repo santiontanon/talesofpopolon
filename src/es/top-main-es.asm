@@ -8,10 +8,6 @@
     db 0,0,0,0,0,0,0,0,0,0,0,0
 ;-----------------------------------------------
 
-; I brought this piece of data here, to use 12 bytes that were being wasted
-; because of the 256-alignment of a table in top-auxiliar.asm
-splash_line1:  ; length 12
-    db "BRAIN  GAMES" 
 
 ;-----------------------------------------------
 ; Code that gets executed when the game starts
@@ -32,17 +28,27 @@ Execute:
     xor a
     ld (CLIKSW),a
     ld (MSXTurboRMode),a    ; Z80 mode
-
-    call Game_trigger_CPUmode_change    ; if we are in a turbo R, switch to R800 smooth mode
-    
-    ld a,2      ; Change screen mode
-    call CHGMOD
-
     ; Change background colors:
-    xor a
     ld (BAKCLR),a
     ld (BDRCLR),a
     call CHGCLR
+
+    call Game_trigger_CPUmode_change    ; if we are in a turbo R, switch to R800 smooth mode
+    
+    ; Activate Turbo mode in PAnasonic MSX2+ WX/WSX/FX models:
+    ; Code sent to me by Pitpan, taken from here: http://map.grauw.nl/resources/msx_io_ports.php
+    ld a,8
+    out (#40),a     ;out the manufacturer code 8 (Panasonic) to I/O port 40h
+    in a,(#40)      ;read the value you have just written
+    cpl             ;complement all bits of the value
+    cp 8            ;if it does not match the value you originally wrote,
+    jr nz,Not_WX    ;it is not a WX/WSX/FX.
+    xor a           ;write 0 to I/O port 41h
+    out (#41),a     ;and the mode changes to high-speed clock    
+Not_WX:
+
+    ld a,2      ; Change screen mode
+    call CHGMOD
 
     ;; clear the screen, and load graphics
     xor a
@@ -209,9 +215,9 @@ UI_message_equip_goldsword:
     db "ESPADA DE ORO"
 UI_message_equip_goldsword_end:
 
-UI_message_equip_secondary_barehand:
-    db "MANOS"
-UI_message_equip_secondary_barehand_end:
+;UI_message_equip_secondary_barehand:
+;    db "MANOS"
+;UI_message_equip_secondary_barehand_end:
 UI_message_equip_secondary_arrow:
     db "FLECHAS"
 UI_message_equip_secondary_arrow_end:
@@ -258,6 +264,8 @@ UI_message_enter_password_end:
 
 splash_line2:  ; length 8
     db "PRESENTA"
+splash_line1:  ; length 12
+    db "BRAIN  GAMES" 
 
 title_press_space:  ; length: 19
     db " ESPACIO PARA JUGAR"

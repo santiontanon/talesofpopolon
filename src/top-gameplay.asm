@@ -494,8 +494,8 @@ ChangeSecondaryWeapon_next_found:
     jr z,ChangeSecondaryWeapon_icearrow
     jr ChangeSecondaryWeapon_hourglass
 ChangeSecondaryWeapon_barehands:
-    ld hl,UI_message_equip_secondary_barehand
-    ld c,UI_message_equip_secondary_barehand_end-UI_message_equip_secondary_barehand
+    ld hl,UI_message_equip_barehand
+    ld c,UI_message_equip_barehand_end-UI_message_equip_barehand
     call displayUIMessage
     ld hl,ROM_barehand_secondaryweapon_patterns
     jr ChangeSecondaryWeapon_change_ui

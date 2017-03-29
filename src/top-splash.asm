@@ -70,7 +70,7 @@ SplashScreen_Loop_fadeTitleIn:
     inc de
     ld a,(de)
     or a
-    jp nz,SplashScreen_Loop_fadeTitleIn 
+    jr nz,SplashScreen_Loop_fadeTitleIn 
 
     xor a
     ld hl,previous_trigger1
@@ -81,7 +81,7 @@ SplashScreen_Loop_loop:
     dec bc
     ld a,b
     or c
-    jp z,SplashScreen_Loop_done
+    jr z,SplashScreen_Loop_done
 
     halt
 
@@ -101,7 +101,7 @@ SplashScreen_Loop_fadeTitleOut:
     dec de
     ld a,(de)
     or a
-    jp nz,SplashScreen_Loop_fadeTitleOut 
+    jr nz,SplashScreen_Loop_fadeTitleOut 
 
     call clearScreenLeftToRight
 
