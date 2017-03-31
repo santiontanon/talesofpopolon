@@ -23,7 +23,7 @@ Screenshots:
 
 You can see a video of the game at: https://youtu.be/u9HiZfxoLmk
 
-Download latest compiled ROM (v1.1.1) from: https://github.com/santiontanon/talesofpopolon/releases/tag/1.1.1
+Download latest compiled ROMs (v1.2) from: https://github.com/santiontanon/talesofpopolon/releases/tag/1.2
 
 You will need an MSX emulator to play the game on a PC, for example OpenMSX: http://openmsx.org
 
@@ -52,7 +52,7 @@ Finally, although Thanatos is not allowed to enter the fortress, he will be able
 * ![Potion](https://github.com/santiontanon/talesofpopolon/blob/master/graphics/item-potion.png?raw=true): Potions replenish four points of vitality.
 * ![Heart](https://github.com/santiontanon/talesofpopolon/blob/master/graphics/item-heart.png?raw=true): Blue hearts give one point of God power.
 * ![Key](https://github.com/santiontanon/talesofpopolon/blob/master/graphics/item-key.png?raw=true): Keys let you open yellow doors.
-* ![Switch](https://github.com/santiontanon/talesofpopolon/blob/master/graphics/item-switch.png?raw=true): You can activate switches with your main or secondary weapon. 
+* ![Switch](https://github.com/santiontanon/talesofpopolon/blob/master/graphics/item-switch.png?raw=true): You can activate switches with your main or secondary weapon. Be careful though, if you close a door in the position where Popolon is standing, Popolon will die!
 * ![Sword](https://github.com/santiontanon/talesofpopolon/blob/master/graphics/item-sword.png?raw=true): Increases your range of attack.
 * ![Gold Sword](https://github.com/santiontanon/talesofpopolon/blob/master/graphics/item-goldsword.png?raw=true): Even longer attack range.
 * ![Arrows](https://github.com/santiontanon/talesofpopolon/blob/master/graphics/item-arrows.png?raw=true): Allows you to attack enemies from a distance, each arrow uses one point of God power (notice that some enemies might be able to deflect arrows with their shields though!).
@@ -90,7 +90,9 @@ In the title screen:
 
 ## Compatibility
 
-The game was designed to be played on MSX1 computers with at least 16KB of RAM. I used the Philips VG8020 as the reference machine (since that's the MSX I owned as a kid), but I've tested it in some other machines using OpenMSX v0.13, if you detect an incompatibility, please let me know!
+The game was designed to be played on MSX1 computers with at least 16KB of RAM. I used the Philips VG8020 as the reference machine (since that's the MSX I owned as a kid), but I've tested it in some other machines using OpenMSX v0.13. If you detect an incompatibility, please let me know!
+
+That being said, if the game detects that you are running on a Panasonic MSX2+ with turbo, then turbo will be activated to get 50% more speed. Also, if the game detects you are running it on a Turbo R, the game will switch to the R800 CPU to also take advantage from the extra speed (you can press "R" while playing the game to switch between the different CPU modes in a Turbo R).
 
 
 ## Notes:
