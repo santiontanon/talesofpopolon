@@ -383,25 +383,38 @@ getcharacter_nonwaiting_nowrap:
     ret z
     cp 27   ;; ESC
     ret z
-    cp 'z'+1
-    jp p,getcharacter_nonwaiting_invalidkey
-    cp 'a'
-    jp p,getcharacter_nonwaiting_lower_case
-getcharacter_nonwaiting_after_converting_to_upper_case
+    cp '0'
+    jp m,getcharacter_nonwaiting_invalidkey
+    cp '9'+1
+    ret m
+    and #df ; make it upper case
     cp 'Z'+1
     jp p,getcharacter_nonwaiting_invalidkey
     cp 'A'
     ret p
-    cp '9'+1
-    jp p,getcharacter_nonwaiting_invalidkey
-    cp '0'
-    ret p
 getcharacter_nonwaiting_invalidkey:
     xor a
     ret
-getcharacter_nonwaiting_lower_case:
-    add a,'A'-'a'
-    jr getcharacter_nonwaiting_after_converting_to_upper_case
+
+;    cp 'z'+1
+;    jp p,getcharacter_nonwaiting_invalidkey
+;    cp 'a'
+;    jp p,getcharacter_nonwaiting_lower_case
+;getcharacter_nonwaiting_after_converting_to_upper_case
+;    cp 'Z'+1
+;    jp p,getcharacter_nonwaiting_invalidkey
+;    cp 'A'
+;    ret p
+;    cp '9'+1
+;    jp p,getcharacter_nonwaiting_invalidkey
+;    cp '0'
+;    ret p
+;getcharacter_nonwaiting_invalidkey:
+;    xor a
+;    ret
+;getcharacter_nonwaiting_lower_case:
+;    add a,'A'-'a'
+;    jr getcharacter_nonwaiting_after_converting_to_upper_case
 
 getcharacter_nonwaiting_reset:
     di

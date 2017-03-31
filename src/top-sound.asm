@@ -151,32 +151,41 @@ MUSIC_INT_LOOP:
     bit 7,a
     jp z,MUSIC_INT_LOOP_WRTPSG
 
-    cp MUSIC_CMD_SKIP
+;    cp MUSIC_CMD_SKIP
+    inc a
     ret z
 
 ;    cp MUSIC_CMD_MULTISKIP
 ;    jp z,MUSIC_INT_MULTISKIP
 
-    cp MUSIC_CMD_SET_INSTRUMENT
+;    cp MUSIC_CMD_SET_INSTRUMENT
+    inc a
     jr z,MUSIC_INT_SET_INSTRUMENT
 
-    cp MUSIC_CMD_PLAY_INSTRUMENT_CH1
+;    cp MUSIC_CMD_PLAY_INSTRUMENT_CH1
+    inc a
     jp z,MUSIC_INT_PLAY_INSTRUMENT_CH1
 
-    cp MUSIC_CMD_PLAY_INSTRUMENT_CH2
+;    cp MUSIC_CMD_PLAY_INSTRUMENT_CH2
+    inc a
     jp z,MUSIC_INT_PLAY_INSTRUMENT_CH2
 
-    cp MUSIC_CMD_PLAY_INSTRUMENT_CH3
+;    cp MUSIC_CMD_PLAY_INSTRUMENT_CH3
+    inc a
     jp z,MUSIC_INT_PLAY_INSTRUMENT_CH3
 
-    cp MUSIC_CMD_GOTO
+;    cp MUSIC_CMD_GOTO
+    inc a
     jp z,MUSIC_INT_GOTO
 
-    cp MUSIC_CMD_END                 
+;    cp MUSIC_CMD_END                 
+    inc a
     jr z,MUSIC_INT_END         ;; if the music sound is over, we are done
 
-    cp SFX_CMD_END                 
-    jp z,SFX_INT_END         ;; if the SFX sound is over, we are done
+;    cp SFX_CMD_END                 
+;    inc a
+;    jp z,SFX_INT_END         ;; if the SFX sound is over, we are done
+    jp SFX_INT_END
 
 ;    cp MUSIC_CMD_REPEAT
 ;    jp z,MUSIC_INT_REPEAT

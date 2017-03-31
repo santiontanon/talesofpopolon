@@ -267,8 +267,9 @@ splash_line2:  ; length 8
 splash_line1:  ; length 12
     db "BRAIN  GAMES" 
 
-title_press_space:  ; length: 19
+title_press_space:  
     db "PRESS SPACE TO PLAY"    
+title_press_space_end:
 
 title_credits:  ; length 20
     db "SANTI ONTANON   2017"

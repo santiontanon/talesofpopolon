@@ -32,8 +32,8 @@ pickups:
 enemies:
     db 12
     ; enemy type, x, y, sprite, color, hit points, state1, state2, state3
-    db ENEMY_RAT_V      , 3*16+8, 1*16+8,    ENEMY_RAT_SPRITE_PATTERN,      13, 1,0,0,0
-    db ENEMY_RAT_V      ,12*16+8, 1*16+8,    ENEMY_RAT_SPRITE_PATTERN,      13, 1,0,0,0
+    db ENEMY_RAT_V      , 3*16+8, 6*16+8,    ENEMY_RAT_SPRITE_PATTERN,      13, 1,0,0,0
+    db ENEMY_RAT_V      ,12*16+8, 6*16+8,    ENEMY_RAT_SPRITE_PATTERN,      13, 1,0,0,0
     db ENEMY_SNAKE      , 1*16+8, 1*16+8,    ENEMY_SNAKE_SPRITE_PATTERN,    12, 1,0,0,0       
     db ENEMY_SNAKE      , 1*16+8, 5*16+8,    ENEMY_SNAKE_SPRITE_PATTERN,    12, 1,0,0,0       
     db ENEMY_BLOB       , 5*16+8, 8*16+8,    ENEMY_BLOB_SPRITE_PATTERN,     12, 4,0,0,0        

@@ -102,7 +102,7 @@ assignPickupSprites_loop:
 
     push hl ; I save the registers here, since assignSprite has many "ret" points, and it'll be a waste of memory to have pops all over
     push bc
-    call assignSprite
+    call assignSprite_prefilter
     pop bc
     pop hl
 assignPickupSprites_skip:
@@ -130,7 +130,7 @@ assignArrowSprites_assignArrow:
     pop ix
     ld bc,6     ; if we add 6 to "ix", then (ix+1),(ix+2) is x,y and (ix+3) is the sprite, as expected by assignSprite
     add ix,bc
-    jp assignSprite
+    jp assignSprite_prefilter
     
 
 ;-----------------------------------------------
@@ -139,8 +139,7 @@ assignArrowSprites_assignArrow:
 assignSprite_prefilter:
     ; 1) Calculate it's depth and y coordinate: 
     ld a,(last_raycast_camera_x)
-    ld c,(ix+1)
-    sub c
+    sub (ix+1)
     ld d,a  ;; save the signed version for later use
     or a
     jp p,assignSprite_positive_x_diff
@@ -151,8 +150,7 @@ assignSprite_positive_x_diff:
     ld c,a
 
     ld a,(last_raycast_camera_y)
-    ld b,(ix+2)
-    sub b
+    sub (ix+2)
     ld e,a  ;; save the signed version for later use
     or a
     jp p,assignSprite_positive_y_diff
@@ -190,20 +188,17 @@ assignSprite_positive_y_diff:
     jp p,assignSprite_bank2
 assignSprite_bank3:
     ld a,3
-    ld (assignSprite_bank),a
     jp assignSprite_done_with_bank_assignment
 assignSprite_bank0:
     xor a
-    ld (assignSprite_bank),a
     jp assignSprite_done_with_bank_assignment
 assignSprite_bank1:
     ld a,1
-    ld (assignSprite_bank),a
     jp assignSprite_done_with_bank_assignment
 assignSprite_bank2:
     ld a,2
-    ld (assignSprite_bank),a
 assignSprite_done_with_bank_assignment:
+    ld (assignSprite_bank),a
 
     ; - see if we have space in the bank:
     ld hl,sprites_available_per_depth
@@ -216,7 +211,7 @@ assignSprite_done_with_bank_assignment:
     ld b,d  ; x
     ld c,e  ; y
     call atan2  ;; a now has the angle
-    add a,128   ;; due to the coordinate system I use, the angle is reversed
+    add a,128   ;; due to the way I calculated the differences, the angle is reversed
     ld b,a
     ld a,(last_raycast_player_angle)
     sub b           ;; a now has the angle with respect to the player angle
@@ -254,18 +249,18 @@ assignSprite_positive_angle_diff:
 ; - places a sprite in the sprite assignment table for rendering in the next frame
 ; - parameters:
 ;   IX: pointer to the item parameters (type, x, y)
-assignSprite:
-    jp assignSprite_prefilter
+;assignSprite:
+;    jp assignSprite_prefilter
 assignSprite_continue:
     ; 4) get the type of the pickup/enemy, and assign a sprite:
-    ld a,(assignSprite_bank)
-    ld b,a
     ld a,(ix+3)
     ;; ice arrows have a fake sprite number, so that we can paint them of different color
     or a
     jp nz,assignSprite_not_an_icearrow
     ld a,SPRITE_PATTERN_ARROW
 assignSprite_not_an_icearrow:
+    ld hl,assignSprite_bank
+    ld b,(hl)
     add a,b
     add a,a
     add a,a
@@ -280,8 +275,7 @@ assignSprite_not_an_icearrow:
     ld (assignSprite_color),a
 
     ; 5) assign the sprite to the table:
-    ld a,(assignSprite_bank)
-    ld b,a
+    ld a,b  ; b still contains (assignSprite_bank)
     ld hl,sprites_available_per_depth
     ADD_HL_A
     dec (hl)

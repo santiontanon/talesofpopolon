@@ -54,9 +54,9 @@ enemies:
     db ENEMY_SKELETON   ,11*16+4, 1*16+8,    ENEMY_SKELETON_SPRITE_PATTERN,   11, 4,0,0,0       
 
 events_map:
-    db 1
+    db 0
     ; x, y, event ID (the first 4 IDs are reserved for 4 potential messages below (each of them
     ;                        4 lines of 22 characters each))
-    db #b0, #e0, 0
+;    db #b0, #e0, 0
 messages_map:
     dw 0 ;; length of the message data block below

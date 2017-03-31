@@ -279,7 +279,8 @@ lineOfSightCheck:
     ld a,(ix+1)
     sub e
     ld e,a  ; e = delta_x
-    ld c,1      ; c = 1 marks that we just started, and that the camera might be inside of a wall, but it's fine
+    ld c,10      ; c > 0 marks that we just started, and that the camera might be inside of a wall, but it's fine
+                ; the value of c is the amount of steps that the camera can still go through a wall
 
     ; start position in  ((last_raycast_camera_x),(last_raycast_camera_y)):
     ld hl,(last_raycast_camera_x)
@@ -517,8 +518,8 @@ lineOfSightCheck_5th_quadrant_continue:
 
 lineOfSightCheck_collision_check:
     push hl
-    push bc
-    ld b,a
+    push de
+    ld d,a
     ld a,l
     rlca
     rlca
@@ -537,23 +538,24 @@ lineOfSightCheck_collision_check:
     ld a,c
     or a
     jp z,lineOfSightCheck_collision_wall
-    ; it's a wall, but since c = 1 (it might be the camera starting inside of a wall, so ignore)
+    ; it's a wall, but since c > 0 (it might be the camera starting inside of a wall, so ignore)
+    dec c   ; we decrease "c", since the camera can only go through a fixed amount of wall
     xor a   ; clear the flags as if there was no collision
-    ld a,b
-    pop bc
+    ld a,d
+    pop de
     pop hl
     ret
 
 lineOfSightCheck_collision_wall:
     or #80  ; set the flags for collision
-    ld a,b
-    pop bc
+    ld a,d
+    pop de
     pop hl
     ret
 
 lineOfSightCheck_collision_no_wall:
-    ld a,b
-    pop bc
+    ld a,d
+    pop de
     pop hl
     ld c,0  ; we mark that we have reached a stated where we are not inside of a wall
     ret
@@ -631,11 +633,11 @@ quick_lineOfSightCheck_y:
     srl c
     srl c
     srl c
-    srl c   ; now "b" has the coarse start "x", and "c" the coarse target "x"
+    srl c   ; now "b" has the coarse start "y", and "c" the coarse target "y"
 
     ;; we skip the first tile of the map, since the camera could start inside of a wall
     ld a,b
-    cp c    ; if we made it to "x", no collision! return! (z flag is set, so, we are good)
+    cp c    ; if we made it to "y", no collision! return! (z flag is set, so, we are good)
     ret z 
     jp p,quick_lineOfSightCheck_y_decrease
     jp quick_lineOfSightCheck_y_increase
@@ -662,5 +664,4 @@ quick_lineOfSightCheck_y_decrease:
     add a,-16
     ld l,a
     jp quick_lineOfSightCheck_y_loop
-
 

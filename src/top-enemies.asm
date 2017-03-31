@@ -156,30 +156,20 @@ checkEnemyHitPlayer_playerBeingHit:
 
     ld hl,player_health
     ld a,(current_armor)
-    cp 2
-    jr z,checkEnemyHitPlayer_lose1hp
-    cp 1
+    dec a
     jr z,checkEnemyHitPlayer_lose2hp
+    dec a
+    jr z,checkEnemyHitPlayer_lose1hp
 checkEnemyHitPlayer_lose3hp:
     dec (hl)
-;    ld a,(player_health)
-;    dec a
-;    ld (player_health),a
     jr z,checkEnemyHitPlayer_player_dead
 checkEnemyHitPlayer_lose2hp:
     dec (hl)
-;    ld a,(player_health)
-;    dec a
-;    ld (player_health),a
     jr z,checkEnemyHitPlayer_player_dead
 checkEnemyHitPlayer_lose1hp:
     dec (hl)
-;    ld a,(player_health)
-;    dec a
-;    ld (player_health),a
     jr nz,checkEnemyHitPlayer_player_not_dead
 checkEnemyHitPlayer_player_dead:
-;    ld (player_health),a
     ld a,GAME_STATE_GAME_OVER
     ld (game_state),a
     jp update_UI_health
@@ -1235,6 +1225,37 @@ switchLeftSprite:
     ; TINY
     db #00,#00,#00,#00,#00,#00,#00,#00,#00,#08,#04,#02,#03,#06,#07,#00
     db #00,#00,#00,#00,#00,#00,#00,#00,#00,#00,#00,#00,#c0,#60,#e0,#00
+
+; Version of the switches that is pressed or not, rather than switching left/right:
+;switchRightSprite:
+;    ; sprite1
+;    db #00,#00,#00,#07,#07,#00,#01,#01,#01,#0f,#10,#2f,#2f,#2f,#3f,#00
+;    db #00,#00,#00,#e0,#e0,#00,#80,#80,#80,#f0,#08,#f4,#f4,#f4,#fc,#00
+;    ; sprite2
+;    db #00,#00,#00,#00,#00,#07,#07,#00,#01,#01,#07,#08,#17,#17,#1f,#00
+;    db #00,#00,#00,#00,#00,#e0,#e0,#00,#80,#80,#e0,#10,#e8,#e8,#f8,#00
+;    ; sprite3
+;    db #00,#00,#00,#00,#00,#00,#00,#03,#00,#01,#01,#07,#08,#0b,#0f,#00
+;    db #00,#00,#00,#00,#00,#00,#00,#c0,#00,#80,#80,#e0,#10,#d0,#f0,#00
+;    ; sprite4
+;    db #00,#00,#00,#00,#00,#00,#00,#00,#00,#03,#01,#01,#03,#05,#07,#00
+;    db #00,#00,#00,#00,#00,#00,#00,#00,#00,#80,#00,#00,#80,#40,#c0,#00
+;
+;switchLeftSprite:
+;    ; sprite1
+;    db #00,#00,#00,#00,#00,#00,#07,#07,#01,#0f,#10,#2f,#2f,#2f,#3f,#00
+;    db #00,#00,#00,#00,#00,#00,#e0,#e0,#80,#f0,#08,#f4,#f4,#f4,#fc,#00
+;    ; sprite2
+;    db #00,#00,#00,#00,#00,#00,#00,#07,#07,#01,#07,#08,#17,#17,#1f,#00
+;    db #00,#00,#00,#00,#00,#00,#00,#e0,#e0,#80,#e0,#10,#e8,#e8,#f8,#00
+;    ; sprite3
+;    db #00,#00,#00,#00,#00,#00,#00,#00,#00,#03,#00,#07,#08,#0b,#0f,#00
+;    db #00,#00,#00,#00,#00,#00,#00,#00,#00,#c0,#00,#e0,#10,#d0,#f0,#00
+;    ; sprite4
+;    db #00,#00,#00,#00,#00,#00,#00,#00,#00,#00,#00,#03,#03,#05,#07,#00
+;    db #00,#00,#00,#00,#00,#00,#00,#00,#00,#00,#00,#80,#80,#40,#c0,#00
+
+
 
 enemyBulletSprite:
     ; LARGE

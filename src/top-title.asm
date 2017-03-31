@@ -262,13 +262,13 @@ TitleScreen_Loop_update_press_space:
     jr z,TitleScreen_Loop_update_press_space_draw
 TitleScreen_Loop_update_press_space_clear:
     xor a
-    ld hl,NAMTBL2+32*16+6
-    ld bc,19
+    ld hl,NAMTBL2+32*16+(32 - (title_press_space_end - title_press_space))/2
+    ld bc,title_press_space_end - title_press_space
     jp FILVRM
 TitleScreen_Loop_update_press_space_draw:
     ld hl,title_press_space
-    ld de,NAMTBL2+32*16+6
-    ld bc,19
+    ld de,NAMTBL2+32*16+(32 - (title_press_space_end - title_press_space))/2
+    ld bc,title_press_space_end - title_press_space
     jp LDIRVM
 
 

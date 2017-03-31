@@ -197,16 +197,17 @@ MUSIC_INSTRUMENT_SQUARE_WAVE:   equ 0
 MUSIC_INSTRUMENT_PIANO:         equ 1 
 MUSIC_INSTRUMENT_WIND:         	equ 2   
 
-SFX_CMD_END:            	equ #f5
-MUSIC_CMD_SET_INSTRUMENT:       equ #f6
-MUSIC_CMD_PLAY_INSTRUMENT_CH1:  equ #f7
-MUSIC_CMD_PLAY_INSTRUMENT_CH2:  equ #f8
-MUSIC_CMD_PLAY_INSTRUMENT_CH3:  equ #f9
-;MUSIC_CMD_REPEAT:         equ  #fa
-;MUSIC_CMD_END_REPEAT:     equ  #fb
-MUSIC_CMD_GOTO:           	equ  #fc
-MUSIC_CMD_SKIP:           	equ  #fd
-;MUSIC_CMD_MULTISKIP:      equ  #fe
-MUSIC_CMD_END:            	equ  #ff
+MUSIC_CMD_SKIP:           	equ #ff
+MUSIC_CMD_SET_INSTRUMENT:       equ #fe
+MUSIC_CMD_PLAY_INSTRUMENT_CH1:  equ #fd
+MUSIC_CMD_PLAY_INSTRUMENT_CH2:  equ #fc
+MUSIC_CMD_PLAY_INSTRUMENT_CH3:  equ #fb
+
+MUSIC_CMD_GOTO:           	equ #fa
+MUSIC_CMD_END:            	equ #f9
+SFX_CMD_END:            	equ #f8
+;MUSIC_CMD_REPEAT:         equ  #f7
+;MUSIC_CMD_END_REPEAT:     equ  #f6
+;MUSIC_CMD_MULTISKIP:      equ  #f5
 
 JPCODE:         equ  #C3
