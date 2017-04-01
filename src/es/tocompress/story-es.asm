@@ -29,7 +29,7 @@ story_block4:
     db "CONSTRUIDA EN OLIMPO CONTRA     "
     db "NUESTRA VOLUNTAD! ALGUIEN ESTA  "
     db "CAUSANDO MUERTES Y ATRAPANDO LAS"
-    db "ALMAS EN LA FORTALEZA, IMIDIENDO"
+    db "ALMAS EN LA FORTALEZA,IMPIDIENDO"
     db "QUE LLEGUEN AL REINO DE HADES!  "
     db "                                "
     db "ERES NUESTRA ESPERANZA! SOLO    "
