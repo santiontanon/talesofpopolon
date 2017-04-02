@@ -427,9 +427,13 @@ updateEnemyMedusa_stone:
 updateEnemyMedusa_spawn_snake:
     call enemyFireBullet
     ; enemy type, x, y, sprite, color, hit points, state1, state2, state3
-    ld (iy),ENEMY_SNAKE
-    ld (iy+3),ENEMY_SNAKE_SPRITE_PATTERN
-    ld (iy+4),2 ;; color
+    ld (hl),ENEMY_SNAKE
+    inc hl
+    inc hl
+    inc hl
+    ld (hl),ENEMY_SNAKE_SPRITE_PATTERN
+    inc hl
+    ld (hl),2 ;; color
     ret
 
 
@@ -540,6 +544,7 @@ moveEnemyBullet:
 ;-----------------------------------------------
 ; Fires a bullet if possible, input:
 ; - d,e: difference in y,x of the player position
+; - at the end, hl contains the pointer to the new bullet
 enemyFireBullet:
     ; find available enemy spot:
     ld hl,currentMapEnemies
@@ -567,6 +572,7 @@ enemyFireBullet_foundspot:
     call playSFX
     pop hl
     ; enemy type, x, y, sprite, color, hit points, state1, state2, state3
+    push hl
     ld (hl),ENEMY_BULLET
     ld a,(ix+1)
     inc hl
@@ -597,6 +603,7 @@ enemyFireBullet_foundspot:
     call atan2
     pop hl
     ld (hl),a   ; state 3
+    pop hl  ; we recover the pointer to the beginning of the bullet
     ret
 
 
