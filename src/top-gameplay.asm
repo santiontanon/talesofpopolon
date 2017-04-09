@@ -1731,7 +1731,7 @@ EnterMap_Loop_fortress1_to_fortress2:
     ; set the colors:
     ld a,#a0
     ld (texture_colors+7),a
-    ld (texture_colors+8),a
+;    ld (texture_colors+8),a
     ld iy,Exit_fortress1_to_fortress2
     jp EnterMap_Loop_generic
 
@@ -1739,31 +1739,31 @@ EnterMap_Loop_fortress2_to_fortress1:
     ; set the colors:
     ld a,#f0
     ld (texture_colors+7),a
-    ld (texture_colors+8),a
+;    ld (texture_colors+8),a
     ld iy,Exit_fortress2_to_fortress1
     jp EnterMap_Loop_generic
 
 EnterMap_Loop_fortress_to_catacombs:
     ; set the colors:
-    ld a,#a0
-    ld (texture_colors+7),a
-    ld (texture_colors+8),a
-    ; patch the textures:
-    ld hl,textures_catacombs_pletter
-    ld de,textures+7*256
-    call pletter_unpack
+;    ld a,#a0
+;    ld (texture_colors+7),a
+;    ld (texture_colors+8),a
+;    ; patch the textures:
+;    ld hl,textures_catacombs_pletter
+;    ld de,textures+7*256
+;    call pletter_unpack
     ld iy,Exit_fortress_to_catacombs
     jp EnterMap_Loop_generic
 
 EnterMap_Loop_catacombs_to_fortress:
     ; set the colors:
-    ld a,#f0
-    ld (texture_colors+7),a
-    ld (texture_colors+8),a   
+;    ld a,#f0
+;    ld (texture_colors+7),a
+;    ld (texture_colors+8),a   
     ; reload the textures:
-    ld hl,textures_pletter
-    ld de,textures
-    call pletter_unpack
+;    ld hl,textures_pletter
+;    ld de,textures
+;    call pletter_unpack
     ld iy,Exit_catacombs_to_fortress
     jp EnterMap_Loop_generic
 

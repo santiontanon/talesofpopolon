@@ -750,13 +750,13 @@ raycast_render_wall_texture_and_column_determined:
 
     ;; get the proper texture:
     ; animation of texture 8 (alternates 8 and 9):
-    cp 8
+    cp 9
     jp nz,raycast_render_wall_texture_and_column_determined_next
     ld a,(game_cycle)
     and #04
-    ld a,8
-    jp nz,raycast_render_wall_texture_and_column_determined_next
     ld a,9
+    jp nz,raycast_render_wall_texture_and_column_determined_next
+    ld a,10
 raycast_render_wall_texture_and_column_determined_next:
 
     ld h,(textures/256)-1   ; we subtract 1, since texture IDs start at 1
@@ -1175,7 +1175,7 @@ raycast_reset_clear_buffer_loop4:
 textures_pletter:
     incbin "tocompress/textures.plt"
 
-textures_catacombs_pletter:
-    incbin "tocompress/textures-catacombs.plt"
+;textures_catacombs_pletter:
+;    incbin "tocompress/textures-catacombs.plt"
 
     include "top-raycasting-textureverticalratetable.asm"
