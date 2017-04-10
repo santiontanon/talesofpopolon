@@ -180,6 +180,7 @@ SWITCH_STATE_LEFT:		equ 1
 
 MAP_TILE_DOOR:		equ	3
 MAP_TILE_EXIT:		equ	4
+MAP_TILE_EXIT2:		equ	9
 MAP_TILE_MIRROR_WALL:	equ	8
 
 ;-----------------------------------------------

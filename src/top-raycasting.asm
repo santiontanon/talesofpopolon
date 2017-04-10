@@ -749,14 +749,14 @@ raycast_render_wall_texture_and_column_determined:
     ; a has the texture ID
 
     ;; get the proper texture:
-    ; animation of texture 9 (alternates 9 and 10):
-    cp 9
+    ; animation of texture 10 (alternates 10 and 11):
+    cp 10
     jp nz,raycast_render_wall_texture_and_column_determined_next
     ld a,(game_cycle)
     and #04
-    ld a,9
-    jp nz,raycast_render_wall_texture_and_column_determined_next
     ld a,10
+    jp nz,raycast_render_wall_texture_and_column_determined_next
+    ld a,11
 raycast_render_wall_texture_and_column_determined_next:
 
     ld h,(textures/256)-1   ; we subtract 1, since texture IDs start at 1

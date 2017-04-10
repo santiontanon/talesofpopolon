@@ -18,7 +18,7 @@ previous_keymatrix0:    ds virtual 1
 ;; patterns 24 - 31.
 ;; the number here indexes the list of enemy sprite patterns (enemySpritePatterns)
 spritePatternCacheTable:        ds virtual 8
-texture_colors:         ds virtual 10
+texture_colors:         ds virtual 11
 
 initial_rendering_blocks:   ds virtual 5
 initial_rendering_address:  ds virtual 8
@@ -146,7 +146,7 @@ textures_before:
     ;; modifying the low byte of the registers
     ds virtual ((($-1)/#100)+1)*#100-$
 
-textures:                           ds virtual 16*16*10 ; only 10 textures at a time are allowed (due to memory constraints)
+textures:                           ds virtual 16*16*11 ; only 11 textures at a time are allowed (due to memory constraints)
 
 currentMap:                         ds virtual 16*16
 

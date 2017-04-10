@@ -146,7 +146,9 @@ ROM_texture_colors:
     db #f0  ; gate (non - openable door)
     db #70  ; statue
     db #f0  ; mirror wall 
-    db #f0  ; unused
+    db #f0  ; staircase
+    db #a0  ; prisoner
+    db #a0  ; prisoner
 
 ;; these define the columns that will be rendered by the raycasting engine at each
 ;; sub-frame. The first sub-frame renders 0 - 33, the second 34 - 83, etc.

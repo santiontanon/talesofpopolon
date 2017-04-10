@@ -146,6 +146,7 @@ ROM_texture_colors:
     db #f0  ; gate (non - openable door)
     db #70  ; statue
     db #f0  ; mirror wall 
+    db #f0  ; staircase
     db #a0  ; prisoner
     db #a0  ; prisoner
 

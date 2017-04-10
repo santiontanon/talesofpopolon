@@ -293,6 +293,8 @@ MoveForward:
     call z,openDoor   ; after this call, "a" contains the new value of the map position (0 if the door was open, or MAP_TILE_DOOR otherwise)
     cp MAP_TILE_EXIT
     jr z,popHLAndJumpToWalkedIntoAnExit
+    cp MAP_TILE_EXIT2
+    jr z,popHLAndJumpToWalkedIntoAnExit
     cp MAP_TILE_MIRROR_WALL
     call z,walkedIntoAMirrorWall
     or a
@@ -322,6 +324,8 @@ MoveForward_skip_x:
     cp MAP_TILE_DOOR    
     call z,openDoor   ; after this call, "a" contains the new value of the map position (0 if the door was open, or MAP_TILE_DOOR otherwise)
     cp MAP_TILE_EXIT
+    jp z,walkedIntoAnExit
+    cp MAP_TILE_EXIT2
     jp z,walkedIntoAnExit
     cp MAP_TILE_MIRROR_WALL
     call z,walkedIntoAMirrorWall
