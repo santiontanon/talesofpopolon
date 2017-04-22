@@ -23,7 +23,7 @@ Screenshots:
 
 You can see a video of the game at: https://youtu.be/u9HiZfxoLmk
 
-Download latest compiled ROMs (v1.2) from: https://github.com/santiontanon/talesofpopolon/releases/tag/1.2
+Download latest compiled ROMs (v1.3) from: https://github.com/santiontanon/talesofpopolon/releases/tag/v1.3
 
 You will need an MSX emulator to play the game on a PC, for example OpenMSX: http://openmsx.org
 
