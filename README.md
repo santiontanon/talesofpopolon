@@ -15,7 +15,7 @@ You are our only hope Popolon! Only mortal souls can enter the fortress. Please 
 
 ## Instructions
 
-Screenshots:
+Screenshots (of version 1.3):
 
 <img src="https://github.com/santiontanon/talesofpopolon/blob/master/graphics/top-ss1.png?raw=true" alt="title screen" width="400"/> <img src="https://github.com/santiontanon/talesofpopolon/blob/master/graphics/top-ss2.png?raw=true" alt="in game 1" width="400"/>
 
