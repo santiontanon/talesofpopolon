@@ -141,6 +141,12 @@ MSXTurboRMode:                      ds virtual 1
 patternCopyBuffer2:
 password_buffer:                    ds virtual 32
 
+; I ended up not using this, since I don't have enough bytes in the ROM to support it...
+;raycast_double_buffer:		    ds virtual 1	;; This variable is only used in MSX2 or higher for using double buffering, and remove flickering when rendering
+;							;; if "raycast_double_buffer%2 =  0", we are rendering in the usual VDP addresses
+;							;; if "raycast_double_buffer%2 != 0", we are rendering in the secondary buffer (usual addresses + #4000)
+;raycast_use_double_buffer:	    ds virtual 1	;; this is 0 if the MSX only has 16KB of VRAM, and 1 otherwise, so we can use double buffering
+
 textures_before:
     ;; align the map with multiples of 256 bytes, so that I can address them directly by 
     ;; modifying the low byte of the registers

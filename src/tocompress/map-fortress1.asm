@@ -67,6 +67,6 @@ messages_map:
 
     db " THE STONE FACE SAYS: "
     db "THE CATACOMBS... WHERE"
-    db "SOULS OF LOST PEOPLE  "
-    db "ARE TRAPPED...        "
+    db "SOULS OF THE LOST ARE "
+    db "TRAPPED...            "
 

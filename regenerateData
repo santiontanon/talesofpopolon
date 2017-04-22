@@ -28,7 +28,6 @@ java -jar java/glass-0.5.jar src/tocompress/map-keres2.asm src/tocompress/map-ke
 java -jar java/glass-0.5.jar src/tocompress/patterns.asm src/tocompress/patterns.bin
 java -jar java/glass-0.5.jar src/tocompress/ui.asm src/tocompress/ui.bin
 java -jar java/glass-0.5.jar src/tocompress/textures.asm src/tocompress/textures.bin
-java -jar java/glass-0.5.jar src/tocompress/textures-catacombs.asm src/tocompress/textures-catacombs.bin
 java -jar java/glass-0.5.jar src/tocompress/base-sprites.asm src/tocompress/base-sprites.bin
 java -jar java/glass-0.5.jar src/tocompress/title-sprites.asm src/tocompress/title-sprites.bin
 java -jar java/glass-0.5.jar src/tocompress/medusa-sprites.asm src/tocompress/medusa-sprites.bin
@@ -67,7 +66,6 @@ java -cp java/MSXTools.jar utils.Pletter src/tocompress/map-keres2.bin src/tocom
 java -cp java/MSXTools.jar utils.Pletter src/tocompress/patterns.bin src/tocompress/patterns.plt
 java -cp java/MSXTools.jar utils.Pletter src/tocompress/ui.bin src/tocompress/ui.plt
 java -cp java/MSXTools.jar utils.Pletter src/tocompress/textures.bin src/tocompress/textures.plt
-java -cp java/MSXTools.jar utils.Pletter src/tocompress/textures-catacombs.bin src/tocompress/textures-catacombs.plt
 java -cp java/MSXTools.jar utils.Pletter src/tocompress/base-sprites.bin src/tocompress/base-sprites.plt
 java -cp java/MSXTools.jar utils.Pletter src/tocompress/medusa-sprites.bin src/tocompress/medusa-sprites.plt
 java -cp java/MSXTools.jar utils.Pletter src/tocompress/ker-sprites.bin src/tocompress/ker-sprites.plt

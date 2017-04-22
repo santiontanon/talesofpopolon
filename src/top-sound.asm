@@ -44,6 +44,7 @@ playSFX:
 ;-----------------------------------------------
 ; Loads the interrupt hook for playing music:
 SETUP_MUSIC_INTERRUPT:
+    call StopPlayingMusic
     ld a,8
     ld (Music_tempo),a	;; default music tempo
 

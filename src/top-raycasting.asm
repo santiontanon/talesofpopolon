@@ -769,6 +769,7 @@ raycast_render_wall_texture_and_column_determined_next:
         add hl,bc
         ld a,(hl)
         ld ixh,a
+        ld ixl,a    ; we save it in both registers, since ixh might be overwritten if an explicit color is used in a texture
     ENDIF
 
     ld b,0
@@ -818,6 +819,10 @@ raycast_render_wall_loop_top_half:
     ;; if the texture is 0, skip pixel
     or a ; same as cp 0, but faster
     jp z,raycast_render_wall_loop_top_half_continue
+    dec a
+    jp z,raycast_render_wall_loop_top_half_default_color
+    ld ixh,a
+raycast_render_wall_loop_top_half_default_color:
 
     ld a,(bc)
     or d
@@ -839,6 +844,7 @@ raycast_render_wall_loop_top_half:
             ENDIF
         ENDIF
         ld h,e  ; e also has (raycast_texture_ptr), we restore it to h
+        ld ixh,ixl  ; restore the default color
     ENDIF
     exx
     dec e
@@ -871,6 +877,10 @@ raycast_render_wall_loop_bottom_half:
     ;; if the texture is 0, skip pixel
     or a ; same as cp 0, but faster
     jp z,raycast_render_wall_loop_bottom_half_continue
+    dec a
+    jp z,raycast_render_wall_loop_bottom_half_default_color
+    ld ixh,a
+raycast_render_wall_loop_bottom_half_default_color:
 
     ld a,(bc)
     or d
@@ -893,7 +903,7 @@ raycast_render_wall_loop_bottom_half:
             ld h,e  ; e also has (raycast_texture_ptr), we restore it to h
         ENDIF
     ENDIF
-
+    ld ixh,ixl  ; restore the default color
     exx
     dec e
     jp nz,raycast_render_wall_loop_bottom_half

@@ -300,7 +300,6 @@ waitBhalts:
     ret
 
 
-
 ;-----------------------------------------------
 ; hl = a*32
 hl_equal_a_times_32:
@@ -312,6 +311,22 @@ hl_equal_a_times_32:
     add hl,hl
     add hl,hl
     ret
+
+
+;-----------------------------------------------
+; Check the amount of VRAM
+;checkAmountOfVRAM:
+;    xor a
+;    ld hl,raycast_double_buffer
+;    ld (hl),a
+;    inc hl
+;    ld (hl),a
+;    ld a,(MODE)
+;    and #06
+;    ret z
+;    inc (hl)
+;    ret
+
 
 ;-----------------------------------------------
 ; A couple of useful macros for adding 16 and 8 bit numbers

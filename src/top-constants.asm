@@ -35,6 +35,7 @@ BAKCLR: equ #f3ea
 BDRCLR: equ #f3eb
 PUTPNT: equ #f3f8
 GETPNT: equ #f3fa
+MODE:   equ #fafc	
 KEYS:   equ #fbe5    
 KEYBUF: equ #fbf0
 EXPTBL: equ #fcc1
@@ -43,10 +44,10 @@ HKEY:   equ #fd9a       ; hkey interrupt hook
 ;-----------------------------------------------
 ; VRAM map in Screen 2
 CHRTBL2:  equ     #0000   ; pattern table address
-SPRTBL2:  equ     #3800   ; sprite pattern address          
 NAMTBL2:  equ     #1800   ; name table address 
-CLRTBL2:  equ     #2000   ; color table address             
 SPRATR2:  equ     #1b00   ; sprite attribute address
+CLRTBL2:  equ     #2000   ; color table address             
+SPRTBL2:  equ     #3800   ; sprite pattern address          
 ;-----------------------------------------------
 RLE_META: equ	#ff
 ;-----------------------------------------------

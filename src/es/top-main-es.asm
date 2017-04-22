@@ -33,6 +33,7 @@ Execute:
     ld (BDRCLR),a
     call CHGCLR
 
+;    call checkAmountOfVRAM
     call Game_trigger_CPUmode_change    ; if we are in a turbo R, switch to R800 smooth mode
     
     ; Activate Turbo mode in PAnasonic MSX2+ WX/WSX/FX models:
@@ -55,7 +56,6 @@ Not_WX:
     call FILLSCREEN
     call setupPatterns
 
-    call StopPlayingMusic
     call SETUP_MUSIC_INTERRUPT
 
     xor a
@@ -149,7 +149,8 @@ ROM_texture_colors:
     db #f0  ; staircase
     db #a0  ; prisoner
     db #a0  ; prisoner
-
+;    db #40  ; wall 2 with torch
+    
 ;; these define the columns that will be rendered by the raycasting engine at each
 ;; sub-frame. The first sub-frame renders 0 - 33, the second 34 - 83, etc.
 ROM_initial_rendering_blocks_160:

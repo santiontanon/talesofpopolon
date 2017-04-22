@@ -33,9 +33,10 @@ Execute:
     ld (BDRCLR),a
     call CHGCLR
 
+;    call checkAmountOfVRAM
     call Game_trigger_CPUmode_change    ; if we are in a turbo R, switch to R800 smooth mode
     
-    ; Activate Turbo mode in PAnasonic MSX2+ WX/WSX/FX models:
+    ; Activate Turbo mode in Panasonic MSX2+ WX/WSX/FX models:
     ; Code sent to me by Pitpan, taken from here: http://map.grauw.nl/resources/msx_io_ports.php
     ld a,8
     out (#40),a     ;out the manufacturer code 8 (Panasonic) to I/O port 40h
@@ -55,7 +56,6 @@ Not_WX:
     call FILLSCREEN
     call setupPatterns
 
-    call StopPlayingMusic
     call SETUP_MUSIC_INTERRUPT
 
     xor a
@@ -149,6 +149,7 @@ ROM_texture_colors:
     db #f0  ; staircase
     db #a0  ; prisoner
     db #a0  ; prisoner
+;    db #40  ; wall 2 with torch
 
 ;; these define the columns that will be rendered by the raycasting engine at each
 ;; sub-frame. The first sub-frame renders 0 - 33, the second 34 - 83, etc.
@@ -178,7 +179,7 @@ ROM_initial_rendering_blocks_192:
     db 158
     db 192
 ROM_initial_rendering_address
-    dw CHRTBL2+(8-RAYCAST_ROWS_PER_BANK)*8
+    dw CHRTBL2+(8-RAYCAST_ROWS_PER_BANK)*8  
     dw CLRTBL2+(8-RAYCAST_ROWS_PER_BANK)*8
     dw CHRTBL2+(256*8)
     dw CLRTBL2+(256*8)

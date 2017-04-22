@@ -34,4 +34,4 @@ story_block4:
     db "                                "
     db "YOU ARE OUR ONLY HOPE, ONLY MOR-"
     db "TALS ARE ALLOWED INSIDE. PLEASE "
-    db "GO AND STOP THE SOURCE OF EVIL! "
+    db "STOP THE SOURCE OF EVIL!        "
