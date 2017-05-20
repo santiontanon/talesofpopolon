@@ -29,7 +29,7 @@ You will need an MSX emulator to play the game on a PC, for example OpenMSX: htt
 
 Or you can play directly online (thanks to thf!): http://www.file-hunter.com/MSX/Top.html
 
-In Tales of Popolon, you play as Popolon, an ancient Greek hero tasked with the mission of discovering who is trapping the souls of people in the evil fortress built at the bast of Mount Olympus, and stopping them! You will have to find your way around the labyrinthic fortress, defeating the monsters that inhabit it, while collecting weapons and other power-ups that are spread over the fortress.
+In Tales of Popolon you play as Popolon, an ancient Greek hero tasked with the mission of discovering who is trapping the souls of people in the evil fortress built at the bast of Mount Olympus and stopping them! You will have to find your way around the labyrinthic fortress, defeating the monsters that inhabit it while collecting weapons and other power-ups that are spread over the fortress.
 
 The following screens show the basic elements of the game screen:
 
