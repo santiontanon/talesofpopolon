@@ -110,7 +110,8 @@ GameOver_Loop_loop2:
     jr z,GameOver_Loop_loop2
 
 GameOver_goto_splash_screen:
-    ld a,GAME_STATE_SPLASH
+    xor a
+;    ld a,GAME_STATE_SPLASH
 ;    ld (game_state),a
     jp change_game_state
 

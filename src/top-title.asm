@@ -94,10 +94,16 @@ TitleScreen_Loop_loop3: ;; "underline" coming in
 
     call TitleScreen_setupsprites
 
-    ; display credits
+    ; display m for password
     ld hl,title_credits
     ld de,NAMTBL2+32*23+6
     ld bc,20
+    call LDIRVM
+
+    ; display credits
+    ld hl,title_m_for_password
+    ld de,NAMTBL2+32*20+9
+    ld bc,title_m_for_password_end-title_m_for_password
     call LDIRVM
 
     xor a
