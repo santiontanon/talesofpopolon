@@ -1,5 +1,16 @@
 # Tales of Popolon (MSX) by Santiago Ontañón Villar
 
+<img src="https://github.com/santiontanon/talesofpopolon/blob/master/graphics/top-cover-small.png?raw=true" alt="cover" width="400"/> 
+
+You can buy a physical copy of the game via: http://www.matranet.net/boutique/msx/card/top/top.php 
+
+Download latest compiled ROMs (v1.3.1) from: https://github.com/santiontanon/talesofpopolon/releases/tag/v1.3.1
+
+You will need an MSX emulator to play the game on a PC, for example OpenMSX: http://openmsx.org
+
+Or you can play directly online (thanks to thf!): http://www.file-hunter.com/MSX/Top.html
+
+
 ## Introduction
 
 For many centuries, the world had been at peace. Lands were prosperous, and people reached old age. However, all of that was about to change...
@@ -22,12 +33,6 @@ Screenshots (of version 1.2):
 <img src="https://github.com/santiontanon/talesofpopolon/blob/master/graphics/top-ss3.png?raw=true" alt="in game 2" width="400"/> <img src="https://github.com/santiontanon/talesofpopolon/blob/master/graphics/top-ss4.png?raw=true" alt="in game 3" width="400"/>
 
 You can see a video of the game at: https://youtu.be/u9HiZfxoLmk
-
-Download latest compiled ROMs (v1.3.1) from: https://github.com/santiontanon/talesofpopolon/releases/tag/v1.3.1
-
-You will need an MSX emulator to play the game on a PC, for example OpenMSX: http://openmsx.org
-
-Or you can play directly online (thanks to thf!): http://www.file-hunter.com/MSX/Top.html
 
 In Tales of Popolon you play as Popolon, an ancient Greek hero tasked with a mission from Thanatos. He must discover who is trapping souls of people in an evil fortress built at the base of Mount Olympus and stopping them! You will have to find your way around the labyrinthic fortress, defeating monsters that inhabit it while collecting weapons and other power-ups that are spread over the fortress.
 
