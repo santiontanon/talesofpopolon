@@ -8,7 +8,7 @@ Download latest compiled ROMs (v1.3.1) from: https://github.com/santiontanon/tal
 
 You will need an MSX emulator to play the game on a PC, for example OpenMSX: http://openmsx.org
 
-Or you can play directly online (thanks to thf!): http://www.file-hunter.com/MSX/Top.html
+Or you can play directly online (thanks to tfh!): http://www.file-hunter.com/MSX/Top.html
 
 
 ## Introduction
