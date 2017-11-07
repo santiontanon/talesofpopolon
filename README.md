@@ -10,6 +10,7 @@ You will need an MSX emulator to play the game on a PC, for example OpenMSX: htt
 
 Or you can play directly online (thanks to tfh!): http://www.file-hunter.com/MSX/Top.html
 
+(if you are lost in level 1, you can go to the graphics folder in this repo to find a map that should help you get out!)
 
 ## Introduction
 
