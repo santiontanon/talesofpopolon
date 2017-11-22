@@ -125,6 +125,6 @@ Some notes and useful links I used when coding Tales of Popolon
 * I am proud of the way the 3d raycasting engine of Tales of Popolon came out, specially given it runs on MSX1 hardware, whose VDP is really not your friend when it comes to 3D graphics. I took inspiration from other 8bit 3D games (with far more impressive rendering engines), such as:
 	* Stunt car racer: https://www.youtube.com/watch?v=TPDznD7QHb0
 	* Micronaut one: https://www.youtube.com/watch?v=v8gtajpc89s
-	* Spectrum Doom (is this real though? I have not seen the sourcecode/binary anywhere, if anyone has it, please let me know!): https://www.youtube.com/watch?v=kW_XDSFdn-4
+	* Spectrum Doom: https://www.youtube.com/watch?v=kW_XDSFdn-4
 	* ARTRAG's raycasting demo for MSX2+ Turbo R: https://www.youtube.com/watch?v=8ffvdvpePY8
 
