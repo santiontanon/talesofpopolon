@@ -2,6 +2,8 @@
 
 <img src="https://github.com/santiontanon/talesofpopolon/blob/master/graphics/top-cover-small.png?raw=true" alt="cover" width="400"/> 
 
+Cover art by Sirelion!
+
 You can buy a physical copy of the game via: http://www.matranet.net/boutique/msx/card/top/top.php 
 
 Download latest compiled ROMs (v1.3.1) from: https://github.com/santiontanon/talesofpopolon/releases/tag/v1.3.1
